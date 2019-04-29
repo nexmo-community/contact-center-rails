@@ -1,0 +1,2 @@
+class NexmoApp < ApplicationRecord
+end
