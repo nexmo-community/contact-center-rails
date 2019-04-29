@@ -1,0 +1,25 @@
+<% title "Log in" %>
+
+<%= form_tag login_path, class: 'form-auth' do |form| %>    
+  <%= image_tag 'nexmo.png', class: 'mb-4', style: 'width:250px;' %>
+  <%= render partial: 'layouts/flashes' %>
+
+  <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+  
+  <div class="form-group row">
+    <%= label_tag :api_key, "API key", class: "col-sm-4 col-form-label text-right" %>
+    <div class="col-sm-8">
+      <%= text_field_tag :api_key, '',  class:"form-control", required: "", autofocus: "" %>
+    </div>
+    <%= label_tag :api_secret, "API secret", class: "col-sm-4 col-form-label text-right" %>
+    <div class="col-sm-8">
+      <%= password_field_tag :api_secret, '',  class:"form-control", required: "" %>
+    </div>
+  </div>
+
+  <div class="mb-3 small">
+    Your credentials are available on your <a href="https://dashboard.nexmo.com/getting-started-guide">Nexmo Dashboard</a>. They are not stored on this server but rather used to communicate with the Nexmo server.
+  </div>
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+  </form>
+<% end %>

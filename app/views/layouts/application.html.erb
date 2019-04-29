@@ -1,15 +1,45 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>ContactCenter</title>
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title><%= content_for?(:title) ? (yield(:title) + ' @ ') : '' %> Nexmo Contact Center</title>
+<%= csrf_meta_tags %>
+<%= csp_meta_tag %>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+ <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+<%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+</head>
+<body>
+<main role="main" class="container">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light  border-bottom shadow-sm mb-4">
+    <a href="/" class="navbar-brand"><%= image_tag 'nexmo.png', class: '', style: 'height:30px;' %></a>
+    <ul class="navbar-nav mr-auto">
+    </ul>
+      
+    <ul class="navbar-nav">
+      <% unless @nexmo_app.id.blank? %>
+        <li class="nav-item"><%= link_to "App Settings", app_path, class: "nav-link" %></li>
+        <li class="nav-item"><%= link_to "Numbers", app_numbers_path, class: "nav-link" %></li>
+        <li class="nav-item"><%= link_to "Users", users_path, class: "nav-link" %></li>
+        <li class="nav-item"><%= link_to "Events", events_path, class: "nav-link" %></li>
+        <li class="nav-item"><%= link_to "SDK Integration", api_path, class: "nav-link" %></li>
+      <li class="nav-item"><a href="/reset" class="nav-link">Reset</a></li>
+      <% end %>
+      <li class="nav-item"><%= link_to "Log out", logout_path, class: "nav-link" %>
+      <li class="nav-item"><span class="nav-link nav-balance">Balance:<br />€<%= @balance %></span></li>
+    </ul>
+  </nav>
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
-  </head>
 
-  <body>
-    <%= yield %>
-  </body>
+  <%= render partial: 'layouts/flashes' %>
+  
+  <%= yield %>  
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
 </html>
+
