@@ -1,24 +1,11 @@
-# README
+![Nexmo](app/assets/images/nexmo.png)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
 
-Things you may want to cover:
+# Build Your Own Contact Center (Rails version)
 
-* Ruby version
+This is one of the components required for Nexmo's ["Contact Center Use Case"](https://developer.nexmo.com/client-sdk/in-app-voice/contact-center-overview).
 
-* System dependencies
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+<a href="https://heroku.com/deploy?template=https://github.com/nexmo-community/contact-center-rails" target="_blank">
+  <img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy">
+</a>
