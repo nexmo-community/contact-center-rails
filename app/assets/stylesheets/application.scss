@@ -59,3 +59,14 @@
 }
 
 
+pre, textarea#voice_answer_ncco {
+  font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Courier New",monospace;
+  font-size: 0.825em;
+  border: 1px solid #ddd;
+  background-color: #f5f5f5 !important;;
+  padding: 5px;
+}
+
+textarea#voice_answer_ncco {
+  font-size: 0.85em;
+}

@@ -12,7 +12,15 @@ class ApplicationController < ActionController::Base
     #   redirect_to logout_url and return
     # end
     @balance = NexmoApi.balance(session[:api_key], session[:api_secret])
-    
   end
+
+
+  def set_nexmo_app
+    if NexmoApp.all.count != 1
+      redirect_to app_reset_url and return
+    end
+    @nexmo_app = NexmoApp.first
+  end
+
 
 end

@@ -19,13 +19,12 @@
     </ul>
       
     <ul class="navbar-nav">
-      <% unless @nexmo_app.id.blank? %>
+      <% unless @nexmo_app.blank? %>
         <li class="nav-item"><%= link_to "App Settings", app_path, class: "nav-link" %></li>
-        <li class="nav-item"><%= link_to "Numbers", app_numbers_path, class: "nav-link" %></li>
+        <li class="nav-item"><%= link_to "Numbers", numbers_path, class: "nav-link" %></li>
         <li class="nav-item"><%= link_to "Users", users_path, class: "nav-link" %></li>
         <li class="nav-item"><%= link_to "Events", events_path, class: "nav-link" %></li>
         <li class="nav-item"><%= link_to "SDK Integration", api_path, class: "nav-link" %></li>
-      <li class="nav-item"><a href="/reset" class="nav-link">Reset</a></li>
       <% end %>
       <li class="nav-item"><%= link_to "Log out", logout_path, class: "nav-link" %>
       <li class="nav-item"><span class="nav-link nav-balance">Balance:<br />

@@ -1,0 +1,110 @@
+<h1 class="h3 mt-4 text-center"><%= @nexmo_app.name %></h1>
+<h4 class="h6 text-center"><%= @nexmo_app.app_id %></h6>
+
+
+<%= form_with(url: app_update_path, local: true) do |form| %>
+  <% if @nexmo_app.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(nexmo_app.errors.count, "error") %> prohibited this Nexmo app from being saved:</h2>
+
+      <ul>
+      <% @nexmo_app.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-8 text-center">
+      <div class="form-group">
+        <h3 class="mt-4">Answer NCCO</h3>
+        <p>
+          <span class="btn btn-sm btn-outline-primary" id="nnco-connect-inbound-call">Connect to Agent</span>
+          <span class="btn btn-sm btn-outline-primary" id="nnco-connect-outbound-call">Call a phone number</span>
+          <span class="btn btn-sm btn-outline-primary" id="nnco-connect-agent-ivr">Agent IVR</span>
+        </p>
+        <%= form.text_area "nexmo_app[voice_answer_ncco]", id: 'voice_answer_ncco', rows: 20, value: @nexmo_app.voice_answer_ncco, class:"form-control pre", required: true %>
+      </div>
+
+      <%= form.submit "Update", class: 'btn btn-primary' %>
+      <%= link_to 'Cancel', app_path, class: 'btn btn-secondary' %>
+
+    </div>
+  </div>
+
+<% end %>
+
+<script>
+const targetNCCO = document.querySelector("#voice_answer_ncco");
+
+document.querySelector("#nnco-connect-inbound-call").addEventListener('click', function(event){
+  targetNCCO.value = `[
+    {
+        "action": "talk",
+        "text": "Welcome. Please wait while we connect you..."
+    },
+    {
+        "action": "connect",
+        "endpoint": [
+            {
+                "type": "app",
+                "user": "Jane"
+            }
+        ]
+    }
+]`;
+  event.preventDefault();
+})
+
+document.querySelector("#nnco-connect-agent-ivr").addEventListener('click', function(event){
+  targetNCCO.value = `[
+    {
+        "action": "talk",
+        "text": "Welcome. To connect to the right person, please select one of the following options.",
+        "voiceName": "Amy",
+        "bargeIn": false
+    },
+    {
+        "action": "talk",
+        "text": "Press 1, for Jane or 2, for Joe, followed by the hash key.",
+        "voiceName": "Amy",
+        "bargeIn": true
+    },
+    {
+        "action": "input",
+        "eventUrl": ["<%= @dtmf %>"]
+    }
+]`;
+  event.preventDefault();
+})
+
+
+document.querySelector("#nnco-connect-outbound-call").addEventListener('click', function(event){
+  targetNCCO.value = `[
+    {
+        "action": "talk",
+        "text": "Please wait while we connect you."
+    },
+    {
+        "action": "connect",
+        "timeout": 20,
+        "from": "YOUR_NEXMO_NUMBER",
+        "endpoint": [
+            {
+                "type": "phone",
+                "number": "DESTINATION NUMBER"
+            }
+        ]
+    }
+]`;
+  event.preventDefault();
+});
+
+</script>
+
+
+
+
+
+
+
