@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="col-6">
+    <h1>Users</h1>
+  </div>
+  <div class="col-6 text-right">
+    <%= link_to 'New User', new_user_path, class: 'btn btn-sm btn-outline-primary' %>
+  </div>
+</div>
+
+
+<div class="row mt-4">
+  <div class="col-12">
+    <% if @users.count == 0 %>
+      <p>None.</p>
+    <% else %>
+      <table class="table table-sm table-borderless table-striped table-hover">
+        <thead>
+          <tr>
+            <th scope="col">User id</th>
+            <th scope="col">User name</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @users.each do |user| %>
+            <tr>
+              <td><%= user.user_id %></td>
+              <td><%= link_to user.user_name, user_path(user) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
+
+  </div>
+</div>

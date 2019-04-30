@@ -133,4 +133,73 @@ class NexmoApi
     return response.is_a?(Net::HTTPSuccess)
   end
 
+
+
+
+  def self.generate_admin_jwt(nexmo_app)
+    return if nexmo_app.private_key.blank?
+    rsa_private = OpenSSL::PKey::RSA.new(nexmo_app.private_key)
+    payload = {
+      "application_id": nexmo_app.app_id,
+      "iat": Time.now.to_i,
+      "jti": SecureRandom.uuid,
+      "exp": (Time.now.to_i + 86400),
+    }
+    token = JWT.encode payload, rsa_private, 'RS256'
+    return token
+  end
+
+
+  def self.users(nexmo_app)
+    return [] if nexmo_app.private_key.blank?
+
+    uri = URI('https://api.nexmo.com/beta/users')
+    request = Net::HTTP::Get.new(uri)
+    auth = "Bearer " + generate_admin_jwt(nexmo_app)
+    request['Authorization'] = auth
+    request['Content-type'] = 'application/json'
+
+    response = Net::HTTP.start(uri.hostname, uri.port, :use_ssl => true) {|http|
+      http.request(request)
+    }
+    return [] unless response.is_a?(Net::HTTPSuccess)
+    json_users = JSON.parse(response.body, object_class: OpenStruct)
+    return json_users
+  end
+
+  def self.create_user(user_name, nexmo_app)
+    return if nexmo_app.private_key.blank? 
+    
+    uri = URI('https://api.nexmo.com/beta/users')
+    request = Net::HTTP::Post.new(uri)
+    auth = "Bearer " + generate_admin_jwt(nexmo_app)
+    request['Authorization'] = auth
+    request['Content-type'] = 'application/json'
+    request.body = {name: user_name, display_name: user_name}.to_json
+
+    response = Net::HTTP.start(uri.hostname, uri.port, :use_ssl => true) {|http|
+      http.request(request)
+    }
+    puts "create user header: #{response.header}"
+    puts "create user body: #{response.body.inspect}"
+    return unless response.is_a?(Net::HTTPSuccess)
+    json_user = JSON.parse(response.body, object_class: OpenStruct)
+    return json_user
+  end
+
+  def self.delete_user(user, nexmo_app)
+    return if nexmo_app.private_key.blank? || user.user_id.blank?
+    
+    uri = URI('https://api.nexmo.com/beta/users/' + user.user_id)
+    request = Net::HTTP::Delete.new(uri)
+    auth = "Bearer " + generate_admin_jwt(nexmo_app)
+    request['Authorization'] = auth
+    request['Content-type'] = 'application/json'
+
+    response = Net::HTTP.start(uri.hostname, uri.port, :use_ssl => true) {|http|
+      http.request(request)
+    }
+    return response.is_a?(Net::HTTPSuccess)
+  end
+
 end

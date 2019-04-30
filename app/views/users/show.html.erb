@@ -1,0 +1,27 @@
+<h1>User</h1>
+
+<p>
+  <strong>User id:</strong>
+  <%= @user.user_id || 'not set' %>
+</p>
+
+<p>
+  <strong>User name:</strong>
+  <%= @user.user_name || 'not set' %>
+</p>
+
+<p>
+  <strong>JWT:</strong>
+  <%= @user.jwt %>
+</p>
+
+<p>
+  <strong>JWT expires at:</strong>
+  <%= @user.jwt_expires_at %>
+</p>
+
+
+  <%= link_to 'View all users', users_path, class: 'btn btn-outline-primary' %>
+  <%= button_to 'Generate JWT', jwt_user_path(@user), class: 'btn btn-outline-warning' %>
+  <%= link_to 'Destroy', [@user], method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-danger' %>
+
