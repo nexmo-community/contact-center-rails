@@ -1,0 +1,26 @@
+<div class="row mt-4 justify-content-center">
+  <div class="col-12">
+    <h2 class="text-left">Events</h2>
+
+    <p>Coming soon.</p>
+  </div>
+</div>
+
+
+<script>
+
+window.onload = function() {
+  var timestamp = Math.floor(Date.now() / 1000) - 1800;
+
+  function getEvents() {
+    $.get( '/events/raw?type=voice&since=' + timestamp, function( data ) {
+        console.log(timestamp);
+        console.log(data);
+    });
+    timestamp = Math.floor(Date.now() / 1000);
+    setTimeout(getEvents, 5000);
+  }
+  //getEvents();
+};
+
+</script>
