@@ -1,5 +1,5 @@
 class NexmoAppController < ApplicationController
-  before_action :set_nexmo_app, except: [:setup, :create, :reset]
+  skip_before_action :set_nexmo_app, only: [:setup, :create, :reset]
 
   def update
     if @nexmo_app.update(nexmo_app_params)

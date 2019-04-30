@@ -62,4 +62,75 @@ class NexmoApi
   end
 
   
+
+
+
+  def self.numbers(api_key, api_secret)
+    uri = URI("https://rest.nexmo.com/account/numbers?api_key=#{api_key}&api_secret=#{api_secret}")
+    request = Net::HTTP::Get.new(uri)
+    request['Content-type'] = 'application/json'
+    response = Net::HTTP.start(uri.hostname, uri.port, :use_ssl => true) {|http|
+      http.request(request)
+    }
+    return nil unless response.is_a?(Net::HTTPSuccess)
+    json_object = JSON.parse(response.body, object_class: OpenStruct)
+    return json_object.numbers
+  end
+
+  def self.number_search(country, api_key, api_secret)
+    uri = URI("https://rest.nexmo.com/number/search?api_key=#{api_key}&api_secret=#{api_secret}&country=#{country}&features=VOICE&size=100")
+    request = Net::HTTP::Get.new(uri)
+    request['Content-type'] = 'application/json'
+    response = Net::HTTP.start(uri.hostname, uri.port, :use_ssl => true) {|http|
+      http.request(request)
+    }
+    return nil unless response.is_a?(Net::HTTPSuccess)
+    json_object = JSON.parse(response.body, object_class: OpenStruct)
+    return json_object.numbers
+  end
+
+  def self.number_buy(country, msisdn, api_key, api_secret)
+    uri = URI("https://rest.nexmo.com/number/buy?api_key=#{api_key}&api_secret=#{api_secret}")
+    request = Net::HTTP::Post.new(uri)
+    request.set_form_data({
+      country: country,
+      msisdn: msisdn
+    })
+    response = Net::HTTP.start(uri.hostname, uri.port, :use_ssl => true) {|http|
+      http.request(request)
+    }
+    return response.is_a?(Net::HTTPSuccess)
+  end
+
+  
+  def self.number_add(app_id, country, msisdn, api_key, api_secret)
+    uri = URI("https://rest.nexmo.com/number/update?api_key=#{api_key}&api_secret=#{api_secret}")
+    request = Net::HTTP::Post.new(uri)
+    request.set_form_data({
+      country: country,
+      msisdn: msisdn,
+      voiceCallbackType: "app",
+      voiceCallbackValue: app_id
+    })
+    response = Net::HTTP.start(uri.hostname, uri.port, :use_ssl => true) {|http|
+      http.request(request)
+    }
+    return response.is_a?(Net::HTTPSuccess)
+  end
+
+
+  def self.number_remove(app_id, country, msisdn, api_key, api_secret)
+    uri = URI("https://rest.nexmo.com/number/update?api_key=#{api_key}&api_secret=#{api_secret}")
+    request = Net::HTTP::Post.new(uri)
+    request.set_form_data({
+      country: country,
+      msisdn: msisdn,
+      voiceCallbackType: "app"
+    })
+    response = Net::HTTP.start(uri.hostname, uri.port, :use_ssl => true) {|http|
+      http.request(request)
+    }
+    return response.is_a?(Net::HTTPSuccess)
+  end
+
 end

@@ -1,0 +1,45 @@
+
+<div class="row">
+  <div class="col-6">
+    <h1>Numbers Available in <%= @country %> </h1>
+  </div>
+  <div class="col-6 text-right">
+    <%= render partial: "search_form", locals: {country: @country} %>
+  </div>
+</div>
+
+<% if @available_numbers.blank? %>
+  <p>Nothing found</p>
+<% else %>
+  <table class="table table-sm table-borderless table-striped table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Number</th>
+        <th scope="col">Country</th>
+        <th scope="col">Features</th>
+        <th scope="col">Type</th>
+        <th scope="col">Cost</th>
+        <th scope="col">&nbsp;</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @available_numbers.each do |number| %>
+        <tr>
+          <td><%= number.msisdn %></td>
+          <td><%= number.country %></td>
+          <td><%= number.features %></td>
+          <td><%= number.type %></td>
+          <td><%= number.cost %></td>
+          <td>
+            <%= form_tag (numbers_buy_path) do %>
+            <%= hidden_field_tag(:country, @country) %>
+            <%= hidden_field_tag(:msisdn, number.msisdn) %>
+            <%= submit_tag("Buy", class: 'btn btn-sm btn-primary') %>
+          <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

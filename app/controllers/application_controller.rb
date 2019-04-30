@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   before_action :check_nexmo_api_credentials
+  before_action :set_nexmo_app
 
   private
 
