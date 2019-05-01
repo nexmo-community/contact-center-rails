@@ -1,6 +1,7 @@
 class AuthController < ApplicationController
 
   skip_before_action :check_nexmo_api_credentials, only: [:login, :login_do, :logout]
+  skip_before_action :set_nexmo_app
 
   def login
     unless session[:api_key].blank? || session[:api_secret].blank?
