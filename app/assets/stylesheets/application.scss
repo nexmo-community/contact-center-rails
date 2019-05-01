@@ -74,3 +74,34 @@ textarea#voice_answer_ncco {
 form.button_to {
   display: inline;
 }
+
+
+.form-group {
+  label {
+    font-weight: bold;
+    &.simple {
+      font-weight: normal;
+    }
+  }
+}
+.form-control-url {
+  background-color: white !important;
+  font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Courier New",monospace;
+  font-weight: normal;
+  font-size: 0.825em;
+  border: 0.5px solid #f5f5f5;
+  /* padding: 2px 10px;
+  line-height: 1.5em; */
+}
+.input-group-text-get {
+  background-color: #117bb8;
+  color: white;
+  font-size: 0.9em;
+}
+.input-group-text-post {
+  background-color: #35be8b;
+  color: white;
+  font-size: 0.85em;
+  font-weight: bold;
+  padding: 2px 10px;
+}

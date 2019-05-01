@@ -1,51 +1,50 @@
-
-<div class="row">
-  <div class="col-6">
-    <h1><%= @nexmo_app.name %></h1>
-  </div>
-  <div class="col-6 text-right">
-    <p class="">
-      <%= link_to raw('<i class="fas fa-download"></i> Private key'), app_private_key_path, class: 'btn btn-sm btn-outline-primary' %>
-      <%= link_to raw('<i class="fas fa-download"></i> Public key'), app_public_key_path, class: 'btn btn-sm btn-outline-primary' %>
-      <%= link_to raw('<i class="fas fa-pencil-alt"></i> Update NCCO'), app_edit_path, class: "btn btn-sm btn-outline-primary" %>
-    </p>
-  </div>
+<div class="float-md-right">
+  <%= link_to raw('<i class="fas fa-download"></i> Private key'), app_private_key_path, class: 'btn btn-sm btn-outline-primary' %>
+  <%= link_to raw('<i class="fas fa-download"></i> Public key'), app_public_key_path, class: 'btn btn-sm btn-outline-primary' %>
+  <%= link_to raw('<i class="fas fa-pencil-alt"></i> Update NCCO'), app_edit_path, class: "btn btn-sm btn-outline-primary" %>
 </div>
 
-    <p><strong>App id</strong>:<br />
-      <%= @nexmo_app.app_id %>
-    </p>
+<h1 class="mb-5"><%= @nexmo_app.name %></h1>
 
-<div class="row mt-4">
-  <div class="col-5">
-    <p class="mb-0"><strong>Answer URL</strong></p>
+<table class="table">
+<tr>
+  <th>App id</th>
+  <td><%= @nexmo_app.app_id %></td>
+</tr>
+<tr>
+  <th>Answer URL</th>
+  <td>
     <div class="input-group">
-        <div class="input-group-prepend">
-            <div class="input-group-text input-group-text-<%= (@nexmo_app.voice_answer_method || "").downcase %>"><%= @nexmo_app.voice_answer_method %></div>
-        </div>
-        <%= link_to @nexmo_app.voice_answer_url, webhooks_answer_path, class: 'form-control', target: '_blank' %>
+      <div class="input-group-prepend">
+        <div class="input-group-text input-group-text-<%= (@nexmo_app.voice_answer_method || "").downcase %>"><%= @nexmo_app.voice_answer_method %></div>
+      </div>
+      <%= link_to @nexmo_app.voice_answer_url, webhooks_answer_path, class: 'form-control form-control-url', target: '_blank' %>
     </div>
-
-    <p class="mt-4 mb-0"><strong>Voice Event URL</strong></p>
+  </td>
+</tr>
+<tr>
+  <th>Voice Event  URL</th>
+  <td>
     <div class="input-group">
-        <div class="input-group-prepend">
-            <div class="input-group-text input-group-text-<%= (@nexmo_app.voice_event_method || "").downcase %>"><%= @nexmo_app.voice_event_method %></div>
-        </div>
-        <span class="form-control"><%= @nexmo_app.voice_event_url %></span>
+      <div class="input-group-prepend">
+        <div class="input-group-text input-group-text-<%= (@nexmo_app.voice_event_method || "").downcase %>"><%= @nexmo_app.voice_event_method %></div>
+      </div>
+      <span class="form-control form-control-url"><%= @nexmo_app.voice_event_url %></span>
     </div>
-
-  </div>
-  <div class="col-7">
-    <h2 class="h4">NCCO</h2>
+  </td>
+</tr>
+<tr>
+  <th>NCCO</th>
+  <td>
     <% if @nexmo_app.voice_answer_ncco.blank? %>
       <p>Not set</p>
     <% else %>
-      <pre>
-<%= @nexmo_app.voice_answer_ncco %>
-      </pre>
+      <pre><%= @nexmo_app.voice_answer_ncco %></pre>
     <% end %>
-  </div>
-</div>
+  </td>
+</tr>
+</table>
+
 
 <!-- 
 <a href="/reset">reset</a>
