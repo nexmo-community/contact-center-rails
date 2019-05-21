@@ -2,7 +2,7 @@
   <div class="col-12">
     <h2 class="text-left">Events</h2>
 
-    <p>Coming soon.</p>
+    <div id="logs">...</div>
   </div>
 </div>
 
@@ -13,14 +13,13 @@ window.onload = function() {
   var timestamp = Math.floor(Date.now() / 1000) - 1800;
 
   function getEvents() {
-    $.get( '/events/raw?type=voice&since=' + timestamp, function( data ) {
-        console.log(timestamp);
-        console.log(data);
+    $.get( '/events/raw?api_key=<%= session[:api_key] %>&type=voice&since=' + timestamp, function( data ) {
+      $('#logs').prepend(data);
     });
     timestamp = Math.floor(Date.now() / 1000);
     setTimeout(getEvents, 5000);
   }
-  //getEvents();
+  setTimeout(getEvents, 1000);
 };
 
 </script>
