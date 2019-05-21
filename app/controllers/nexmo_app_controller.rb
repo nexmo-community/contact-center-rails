@@ -1,6 +1,12 @@
 class NexmoAppController < ApplicationController
   skip_before_action :set_nexmo_app, only: [:setup, :create, :reset]
 
+
+  def edit
+    @dtmf_url = webhooks_dtmf_url
+  end
+
+
   def update
     if @nexmo_app.update(nexmo_app_params)
       redirect_to app_url, notice: 'App was successfully updated.'

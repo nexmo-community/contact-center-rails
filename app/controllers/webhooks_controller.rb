@@ -19,5 +19,50 @@ class WebhooksController < ApplicationController
     head :ok
   end
 
+  def dtmf
+    # params.each do |key,value|
+    #   Rails.logger.warn "Param #{key}: #{value}"
+    # end
+    case params[:dtmf]
+    when "1"
+      render json: %q(
+[
+  {
+      "action": "talk",
+      "text": "Please wait while we connect you to Jane"
+  },
+  {
+      "action": "connect",
+      "endpoint": [
+          {
+              "type": "app",
+              "user": "Jane"
+          }
+      ]
+  }
+]
+)
+    when "2"
+      render json: %q(
+[
+  {
+      "action": "talk",
+      "text": "Please wait while we connect you to Joe"
+  },
+  {
+      "action": "connect",
+      "endpoint": [
+          {
+              "type": "app",
+              "user": "Joe"
+          }
+      ]
+  }
+]
+)
+    else 
+      head :ok
+    end
+  end
 
 end

@@ -66,13 +66,13 @@ document.querySelector("#nnco-connect-agent-ivr").addEventListener('click', func
     },
     {
         "action": "talk",
-        "text": "Press 1, for Jane or 2, for Joe, followed by the hash key.",
+        "text": "Press 1 for Jane, or 2 for Joe, followed by the hash key.",
         "voiceName": "Amy",
         "bargeIn": true
     },
     {
         "action": "input",
-        "eventUrl": ["<%= @dtmf %>"]
+        "eventUrl": ["<%= @dtmf_url %>"]
     }
 ]`;
   event.preventDefault();

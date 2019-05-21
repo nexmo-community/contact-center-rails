@@ -41,6 +41,7 @@ Rails.application.routes.draw do
 
   get  'webhooks/answer', to: 'webhooks#answer',    as: 'webhooks_answer'
   post 'webhooks/event',  to: 'webhooks#event',     as: 'webhooks_event'
+  post 'webhooks/dtmf',  to: 'webhooks#dtmf',     as: 'webhooks_dtmf'
 
 
 
