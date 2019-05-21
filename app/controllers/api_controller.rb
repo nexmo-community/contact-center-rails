@@ -14,7 +14,7 @@ class ApiController < ApplicationController
 
     if @app_user.blank?
       NexmoApi.create_user(params['user_name'], @nexmo_app)
-      retrieve_all_users(@nexmo_app)
+      User.retrieve_all(@nexmo_app)
     end
     @app_user = User.where(user_name: params['user_name']).first
     head :service_unavailable and return if @app_user.blank?
