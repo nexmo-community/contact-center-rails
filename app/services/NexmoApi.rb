@@ -20,6 +20,21 @@ class NexmoApi
     return balance.value
   end
 
+  def self.apps(api_key, api_secret)
+    uri = URI('https://api.nexmo.com/v2/applications')
+    request = Net::HTTP::Get.new(uri)
+    auth = "Basic " + Base64.strict_encode64("#{api_key}:#{api_secret}")
+    request['Authorization'] = auth
+    request['Content-type'] = 'application/json'
+
+    response = Net::HTTP.start(uri.hostname, uri.port, :use_ssl => true) {|http|
+      http.request(request)
+    }
+    return nil unless response.is_a?(Net::HTTPSuccess)
+    json_object = JSON.parse(response.body, object_class: OpenStruct)
+    return json_object._embedded.applications
+  end
+
 
   def self.app_create(nexmo_app, api_key, api_secret)
     uri = URI('https://api.nexmo.com/v2/applications/')
