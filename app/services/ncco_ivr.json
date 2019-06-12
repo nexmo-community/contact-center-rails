@@ -1,0 +1,18 @@
+[
+    {
+        "action": "talk",
+        "text": "Welcome. To connect to the right person, please select one of the following options.",
+        "voiceName": "Amy",
+        "bargeIn": false
+    },
+    {
+        "action": "talk",
+        "text": "Press 1 for Jane, or 2 for Joe, followed by the hash key.",
+        "voiceName": "Amy",
+        "bargeIn": true
+    },
+    {
+        "action": "input",
+        "eventUrl": ["DTMF_URL"]
+    }
+]

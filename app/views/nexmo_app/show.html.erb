@@ -38,13 +38,29 @@
   </td>
 </tr>
 <tr>
+  <th>Phone number</th>
+  <td>
+    <% if @nexmo_app.number_msisdn.blank? %>
+      <%= link_to raw('<i class="fas fa-plus"></i> Add'), numbers_path, class: 'btn btn-outline-primary btn-sm' %>
+    <% else %>
+      <%= @nexmo_app.number_msisdn %> (<%= @nexmo_app.number_country %>)
+    <% end %>
+  </td>
+</tr>
+<tr>
   <th>NCCO</th>
   <td>
+    <p>Change for: 
+      <%= link_to "Inbound Call", app_ncco_inbound_path, method: :post, class: 'btn btn-outline-primary btn-sm' %>
+      <%= link_to "Outbound Call", app_ncco_outbound_path, method: :post, class: 'btn btn-outline-primary btn-sm' %>
+      <%= link_to "IVR", app_ncco_ivr_path, method: :post, class: 'btn btn-outline-primary btn-sm' %>
+    </p>
     <% if @nexmo_app.voice_answer_ncco.blank? %>
       <p>Not set</p>
     <% else %>
       <pre><%= @nexmo_app.voice_answer_ncco %></pre>
     <% end %>
+    
   </td>
 </tr>
 </table>

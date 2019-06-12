@@ -38,67 +38,21 @@
 const targetNCCO = document.querySelector("#voice_answer_ncco");
 
 document.querySelector("#nnco-connect-inbound-call").addEventListener('click', function(event){
-  targetNCCO.value = `[
-    {
-        "action": "talk",
-        "text": "Welcome. Please wait while we connect you..."
-    },
-    {
-        "action": "connect",
-        "endpoint": [
-            {
-                "type": "app",
-                "user": "Jane"
-            }
-        ]
-    }
-]`;
+  targetNCCO.value = `<%= raw Ncco.inbound %>`;
   event.preventDefault();
 })
-
-document.querySelector("#nnco-connect-agent-ivr").addEventListener('click', function(event){
-  targetNCCO.value = `[
-    {
-        "action": "talk",
-        "text": "Welcome. To connect to the right person, please select one of the following options.",
-        "voiceName": "Amy",
-        "bargeIn": false
-    },
-    {
-        "action": "talk",
-        "text": "Press 1 for Jane, or 2 for Joe, followed by the hash key.",
-        "voiceName": "Amy",
-        "bargeIn": true
-    },
-    {
-        "action": "input",
-        "eventUrl": ["<%= @dtmf_url %>"]
-    }
-]`;
-  event.preventDefault();
-})
-
 
 document.querySelector("#nnco-connect-outbound-call").addEventListener('click', function(event){
-  targetNCCO.value = `[
-    {
-        "action": "talk",
-        "text": "Please wait while we connect you."
-    },
-    {
-        "action": "connect",
-        "timeout": 20,
-        "from": "YOUR NEXMO NUMBER",
-        "endpoint": [
-            {
-                "type": "phone",
-                "number": "PARAMS_TO"
-            }
-        ]
-    }
-]`;
+  targetNCCO.value = `<%= raw Ncco.outbound(@nexmo_app) %>`;
   event.preventDefault();
 });
+
+document.querySelector("#nnco-connect-agent-ivr").addEventListener('click', function(event){
+  targetNCCO.value = `<%= raw Ncco.ivr(@nexmo_app, @dtmf_url) %>`;
+  event.preventDefault();
+})
+
+
 
 </script>
 

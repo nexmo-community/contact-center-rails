@@ -64,6 +64,24 @@ class NexmoAppController < ApplicationController
   end
 
 
+  # NCCO updates
+
+  def update_ncco_inbound
+    @nexmo_app.update(voice_answer_ncco: Ncco.inbound)
+    redirect_to app_url, notice: "NCCO was successfully updated."
+  end
+
+  def update_ncco_outbound
+    @nexmo_app.update(voice_answer_ncco: Ncco.outbound(@nexmo_app))
+    redirect_to app_url, notice: "NCCO was successfully updated."
+  end
+
+  def update_ncco_ivr
+    @nexmo_app.update(voice_answer_ncco: Ncco.ivr(@nexmo_app, webhooks_dtmf_url))
+    redirect_to app_url, notice: "NCCO was successfully updated."
+  end
+
+
 
   private
 

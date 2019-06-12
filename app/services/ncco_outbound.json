@@ -1,0 +1,17 @@
+[
+    {
+        "action": "talk",
+        "text": "Please wait while we connect you."
+    },
+    {
+        "action": "connect",
+        "timeout": 20,
+        "from": "YOUR_NEXMO_NUMBER",
+        "endpoint": [
+            {
+                "type": "phone",
+                "number": "PARAMS_TO"
+            }
+        ]
+    }
+]
