@@ -19,14 +19,18 @@ class AuthController < ApplicationController
       redirect_to root_url, alert: "Api credentials are invalid..."
       return
     end
-    @existing_apps = NexmoApi.apps(api_key, api_secret)
-    if @existing_apps == nil
-      redirect_to root_url, alert: "Api credentials are invalid."
-    else
-      session[:api_key] = api_key
-      session[:api_secret] = api_secret
-      redirect_to app_url, notice: "Logged in!"
+    # if an app is present, check if belongs to the user logging in
+    if NexmoApp.all.count > 0
+      existing_apps = NexmoApi.apps(api_key, api_secret).map { |app| app.id }
+      nexmo_app = NexmoApp.first
+      unless existing_apps.include? nexmo_app.app_id
+        redirect_to root_url, alert: "The Nexmo app does not belong to this account"
+        return
+      end
     end
+    session[:api_key] = api_key
+    session[:api_secret] = api_secret
+    redirect_to app_url, notice: "Logged in!"
   end
 
 
