@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_29_142945) do
+ActiveRecord::Schema.define(version: 2019_06_12_114717) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,8 @@ ActiveRecord::Schema.define(version: 2019_04_29_142945) do
     t.string "voice_event_method"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "number_msisdn"
+    t.string "number_country"
     t.index ["app_id"], name: "index_nexmo_apps_on_app_id", unique: true
   end
 

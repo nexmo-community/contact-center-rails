@@ -2,16 +2,25 @@
 <div class="row mb-4">
   <div class="col-12 col-lg-6">
     <h1>Numbers</h1>
+    <% unless @nexmo_app.number_msisdn.blank? %>
+      <h4>Number in use: <%= @nexmo_app.number_msisdn %> (<%= @nexmo_app.number_country %>)</h4>
+    <% end %>
   </div>
   <div class="col-12 col-lg-6 text-lg-right">
     <%= render partial: "search_form", locals: {country: 'GB'} %>
   </div>
 </div>
 
+<% if @nexmo_app.number_msisdn.blank? %>
+  <p class="alert alert-info">No Number in use</p>
+<% end %>
+
+<hr />
+
 <table class="table table-sm table-borderless table-striped table-hover">
       <thead>
         <tr>
-          <th scope="col">Number</th>
+          <th scope="col">Available Number</th>
           <th scope="col">Country</th>
           <th scope="col">Features</th>
           <th scope="col">&nbsp;</th>
@@ -28,10 +37,10 @@
               <% if !number.features.include?("VOICE") %>
                 No voice capability.
               <% elsif number.voiceCallbackValue.blank? %>
-                <%= link_to "Assign", numbers_add_path(country: number.country, msisdn: number.msisdn), method: :post, class: 'btn btn-sm btn-danger' %>
+                <%= link_to "Link", numbers_add_path(country: number.country, msisdn: number.msisdn), method: :post, class: 'btn btn-sm btn-danger' %>
               <% elsif number.voiceCallbackValue == @nexmo_app.app_id %>
                 <strong>Linked.</strong>
-                <%= link_to "Remove", numbers_remove_path(country: number.country, msisdn: number.msisdn), method: :post, class: 'btn btn-sm btn-warning' %>
+                <%= link_to "Unlink", numbers_remove_path(country: number.country, msisdn: number.msisdn), method: :post, class: 'btn btn-sm btn-warning' %>
               <% else %>
                 Number already in use.
               <% end %>
@@ -41,8 +50,3 @@
       </tbody>
     </table>
 
-<!-- 
-<p><%=  @nexmo_app.app_id %></p>
-<pre><%= @available_numbers.to_yaml %></pre>
-
--->
