@@ -21,9 +21,9 @@ class AuthController < ApplicationController
     end
     # if an app is present, check if belongs to the user logging in
     if NexmoApp.all.count > 0
-      existing_apps = NexmoApi.apps(api_key, api_secret).map { |app| app.id }
+      existing_apps = NexmoApi.apps(api_key, api_secret)
       nexmo_app = NexmoApp.first
-      unless existing_apps.include? nexmo_app.app_id
+      if existing_apps.blank? || !(existing_apps.map { |app| app.id }.include? nexmo_app.app_id)
         redirect_to root_url, alert: "The Nexmo app does not belong to this account"
         return
       end
