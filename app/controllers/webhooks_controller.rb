@@ -5,11 +5,12 @@ class WebhooksController < ApplicationController
 
 
   def answer
-    if @nexmo_app.voice_answer_ncco.blank?
+    ncco = @nexmo_app.voice_answer_ncco({webhooks_dtmf_url: webhooks_dtmf_url})
+    if ncco.blank?
       render json: []
       return
     end
-    ncco = @nexmo_app.voice_answer_ncco.sub("PARAMS_TO", (params[:to] || ""))
+    ncco = ncco.sub("PARAMS_TO", (params[:to] || ""))
     render json: ncco
   end
 

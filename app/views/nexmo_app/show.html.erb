@@ -1,7 +1,6 @@
 <div class="float-md-right">
   <%= link_to raw('<i class="fas fa-download"></i> Private key'), app_private_key_path, class: 'btn btn-sm btn-outline-primary' %>
   <%= link_to raw('<i class="fas fa-download"></i> Public key'), app_public_key_path, class: 'btn btn-sm btn-outline-primary' %>
-  <%= link_to raw('<i class="fas fa-pencil-alt"></i> Update NCCO'), app_edit_path, class: "btn btn-sm btn-outline-primary" %>
 </div>
 
 <h1 class="mb-5"><%= @nexmo_app.name %></h1>
@@ -55,12 +54,7 @@
       <%= link_to "Outbound Call", app_ncco_outbound_path, method: :post, class: 'btn btn-outline-primary btn-sm' %>
       <%= link_to "IVR", app_ncco_ivr_path, method: :post, class: 'btn btn-outline-primary btn-sm' %>
     </p>
-    <% if @nexmo_app.voice_answer_ncco.blank? %>
-      <p>Not set</p>
-    <% else %>
-      <pre><%= @nexmo_app.voice_answer_ncco %></pre>
-    <% end %>
-    
+    <%= raw @nexmo_app.voice_answer_ncco_descriptive({webhooks_dtmf_url: webhooks_dtmf_url}) %>
   </td>
 </tr>
 </table>

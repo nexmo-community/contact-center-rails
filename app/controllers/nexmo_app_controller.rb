@@ -67,17 +67,17 @@ class NexmoAppController < ApplicationController
   # NCCO updates
 
   def update_ncco_inbound
-    @nexmo_app.update(voice_answer_ncco: Ncco.inbound)
+    @nexmo_app.update(voice_answer_type: :inbound_call)
     redirect_to app_url, notice: "NCCO was successfully updated."
   end
 
   def update_ncco_outbound
-    @nexmo_app.update(voice_answer_ncco: Ncco.outbound(@nexmo_app))
+    @nexmo_app.update(voice_answer_type: :outbound_call)
     redirect_to app_url, notice: "NCCO was successfully updated."
   end
 
   def update_ncco_ivr
-    @nexmo_app.update(voice_answer_ncco: Ncco.ivr(@nexmo_app, webhooks_dtmf_url))
+    @nexmo_app.update(voice_answer_type: :ivr)
     redirect_to app_url, notice: "NCCO was successfully updated."
   end
 
@@ -86,7 +86,7 @@ class NexmoAppController < ApplicationController
   private
 
   def nexmo_app_params
-    params.require(:nexmo_app).permit(:name, :voice_answer_ncco)
+    params.require(:nexmo_app).permit(:name, :voice_answer_type)
   end
 
 end
