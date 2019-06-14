@@ -1,3 +1,5 @@
+require "redis"
+
 class WebhooksController < ApplicationController
 
   skip_before_action :check_nexmo_api_credentials
@@ -6,30 +8,32 @@ class WebhooksController < ApplicationController
 
   def answer
     if @nexmo_app.call_whisper?
+      client = Redis.new
+
       case params[:from_user]
       when 'Jane'
-        session[:whisper_session_id] = params[:conversation_uuid] if session[:whisper_session_id].blank?
-        session[:whisper_agent_leg_id] = params[:uuid]
+        client.set("whisper_session_id", params[:conversation_uuid]) if client.get("whisper_session_id").blank?
+        client.set("whisper_agent_leg_id", params[:uuid])
         ncco = Ncco.call_whisper_agent
       when 'Joe'
-        session[:whisper_session_id] = params[:conversation_uuid] if session[:whisper_session_id].blank?
-        session[:whisper_supervisor_leg_id] = params[:uuid]
+        client.set("whisper_session_id", params[:conversation_uuid]) if client.get("whisper_session_id").blank?
+        client.set("whisper_supervisor_leg_id", params[:uuid])
         ncco = Ncco.call_whisper_supervisor
       else
-        session[:whisper_session_id] = params[:conversation_uuid] if session[:whisper_session_id].blank?
-        session[:whisper_customer_leg_id] = params[:uuid]
+        client.set("whisper_session_id", params[:conversation_uuid]) if client.get("whisper_session_id").blank?
+        client.set("whisper_customer_leg_id", params[:uuid])
         ncco = Ncco.call_whisper_customer
       end 
 
-      if session[:whisper_session_id].blank?
+      if client.get("whisper_session_id").blank?
         render json: { error: "Conversation not found" }, status: :bad_request
         return
       end
       
-      ncco.gsub!("CONVERSATION_ID", session[:whisper_session_id])
-      ncco.gsub!("AGENT_LEG_ID", session[:whisper_session_id] || "")
-      ncco.gsub!("SUPERVISOR_LEG_ID", session[:whisper_supervisor_leg_id] || "")
-      ncco.gsub!("CUSTOMER_LEG_ID", session[:whisper_customer_leg_id] || "")
+      ncco.gsub!("CONVERSATION_ID", client.get("whisper_session_id"))
+      ncco.gsub!("AGENT_LEG_ID", client.get("whisper_agent_leg_id") || "")
+      ncco.gsub!("SUPERVISOR_LEG_ID", client.get("whisper_supervisor_leg_id") || "")
+      ncco.gsub!("CUSTOMER_LEG_ID", client.get("whisper_customer_leg_id") || "")
       render json: ncco
       return
     end

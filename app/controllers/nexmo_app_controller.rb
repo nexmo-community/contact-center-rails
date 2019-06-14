@@ -1,3 +1,5 @@
+require "redis"
+
 class NexmoAppController < ApplicationController
   skip_before_action :set_nexmo_app, only: [:setup, :create, :reset]
 
@@ -81,10 +83,11 @@ class NexmoAppController < ApplicationController
     redirect_to app_url, notice: "NCCO was successfully updated."
   end
   def update_ncco_whisper
-    session[:whisper_session_id] = nil
-    session[:whisper_customer_leg_id] = nil
-    session[:whisper_agent_leg_id] = nil
-    session[:whisper_supervisor_leg_id] = nil
+    client = Redis.new
+    client.del("whisper_session_id")
+    client.del("whisper_agent_leg_id")
+    client.del("whisper_supervisor_leg_id")
+    client.del("whisper_customer_leg_id")
     @nexmo_app.update(voice_answer_type: :call_whisper)
     redirect_to app_url, notice: "NCCO was successfully updated."
   end

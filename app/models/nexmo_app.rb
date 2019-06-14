@@ -1,3 +1,6 @@
+require "redis"
+
+
 class NexmoApp < ApplicationRecord
 
   validates :name, presence: true
@@ -5,6 +8,8 @@ class NexmoApp < ApplicationRecord
   
 
   def voice_answer_ncco_descriptive(params)
+    client = Redis.new
+    
     case self.voice_answer_type 
     when "inbound_call"
       "<h5>Inbound call</h5><pre>" + Ncco.inbound + "</pre>"
@@ -16,6 +21,11 @@ class NexmoApp < ApplicationRecord
       "<h5>Joe selection</h5><pre>" + Ncco.ivr_joe + "</pre>"
     when "call_whisper"
       "<h5>Call whisper</h5>" +
+      "<pre>CONVERSATION_ID: " + (client.get("whisper_session_id") || "-") + 
+      "\nAGENT_LEG_ID: " + (client.get("whisper_session_id") || "-" ) +
+      "\nSUPERVISOR_LEG_ID: " + (client.get("whisper_supervisor_leg_id") || "-") +
+      "\nCUSTOMER_LEG_ID: " + (client.get("whisper_customer_leg_id") || "-") +
+      "</pre>"+
       "<h6>Customer</h6><pre>" + Ncco.call_whisper_customer + "</pre>" +
       "<h6>Agent</h6><pre>" + Ncco.call_whisper_agent + "</pre>" +
       "<h6>Supervisor</h6><pre>" + Ncco.call_whisper_supervisor + "</pre>"
