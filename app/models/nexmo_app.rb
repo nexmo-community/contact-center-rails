@@ -11,7 +11,9 @@ class NexmoApp < ApplicationRecord
     when "outbound_call"
       "<h5>Outbound call</h5><pre>" + Ncco.outbound(self) + "</pre>"
     when "ivr"
-      "<h5>IVR</h5><pre>" + Ncco.ivr(self, params[:webhooks_dtmf_url]) + "</pre>"
+      "<h5>IVR - Main menu</h5><pre>" + Ncco.ivr(self, params[:webhooks_dtmf_url]) + "</pre>" +
+      "<h5>Jane selection</h5><pre>" + Ncco.ivr_jane + "</pre>" +
+      "<h5>Joe selection</h5><pre>" + Ncco.ivr_joe + "</pre>"
     when "call_whisper"
       "<h5>Call whisper</h5>"
     else 

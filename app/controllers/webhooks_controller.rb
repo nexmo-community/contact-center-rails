@@ -26,40 +26,10 @@ class WebhooksController < ApplicationController
     # end
     case params[:dtmf]
     when "1"
-      render json: %q(
-[
-  {
-      "action": "talk",
-      "text": "Please wait while we connect you to Jane"
-  },
-  {
-      "action": "connect",
-      "endpoint": [
-          {
-              "type": "app",
-              "user": "Jane"
-          }
-      ]
-  }
-]
-)
+      render json: Ncco.ivr_jane
     when "2"
-      render json: %q(
-[
-  {
-      "action": "talk",
-      "text": "Please wait while we connect you to Joe"
-  },
-  {
-      "action": "connect",
-      "endpoint": [
-          {
-              "type": "app",
-              "user": "Joe"
-          }
-      ]
-  }
-]
+      render json: Ncco.ivr_joe
+
 )
     else 
       head :ok

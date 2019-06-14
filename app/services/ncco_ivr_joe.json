@@ -1,0 +1,15 @@
+[
+    {
+        "action": "talk",
+        "text": "Please wait while we connect you to Joe"
+    },
+    {
+        "action": "connect",
+        "endpoint": [
+            {
+                "type": "app",
+                "user": "Joe"
+            }
+        ]
+    }
+]
