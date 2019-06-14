@@ -80,6 +80,14 @@ class NexmoAppController < ApplicationController
     @nexmo_app.update(voice_answer_type: :ivr)
     redirect_to app_url, notice: "NCCO was successfully updated."
   end
+  def update_ncco_whisper
+    session[:whisper_session_id] = nil
+    session[:whisper_customer_leg_id] = nil
+    session[:whisper_agent_leg_id] = nil
+    session[:whisper_supervisor_leg_id] = nil
+    @nexmo_app.update(voice_answer_type: :call_whisper)
+    redirect_to app_url, notice: "NCCO was successfully updated."
+  end
 
 
 

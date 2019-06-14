@@ -1,0 +1,16 @@
+[
+    {
+        "action": "conversation",
+        "name": "CONVERSATION_ID",
+        "startOnEnter": true,
+        "record": true,
+        "canSpeak": [
+            "CUSTOMER_LEG_ID",
+            "SUPERVISOR_LEG_ID"
+        ],
+        "canHear": [
+            "CUSTOMER_LEG_ID",
+            "SUPERVISOR_LEG_ID"           
+        ]
+    }
+]

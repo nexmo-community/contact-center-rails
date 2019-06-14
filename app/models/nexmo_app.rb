@@ -15,7 +15,11 @@ class NexmoApp < ApplicationRecord
       "<h5>Jane selection</h5><pre>" + Ncco.ivr_jane + "</pre>" +
       "<h5>Joe selection</h5><pre>" + Ncco.ivr_joe + "</pre>"
     when "call_whisper"
-      "<h5>Call whisper</h5>"
+      "<h5>Call whisper</h5>" +
+      "<h6>Customer</h6><pre>" + Ncco.call_whisper_customer + "</pre>" +
+      "<h6>Agent</h6><pre>" + Ncco.call_whisper_agent + "</pre>" +
+      "<h6>Supervisor</h6><pre>" + Ncco.call_whisper_supervisor + "</pre>"
+
     else 
       "<h5>Not set</h5>"
     end

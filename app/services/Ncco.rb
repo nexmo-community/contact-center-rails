@@ -29,4 +29,18 @@ class Ncco
     return ncco
   end
 
+  def self.call_whisper_customer
+    ncco = File.read(Rails.root.join('app', 'services', 'ncco_call_whisper_customer.json'))
+    return ncco
+  end
+  def self.call_whisper_agent
+    ncco = File.read(Rails.root.join('app', 'services', 'ncco_call_whisper_agent.json'))
+    return ncco
+  end
+  def self.call_whisper_supervisor
+    ncco = File.read(Rails.root.join('app', 'services', 'ncco_call_whisper_supervisor.json'))
+    return ncco
+  end
+
+
 end

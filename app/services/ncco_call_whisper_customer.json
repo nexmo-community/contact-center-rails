@@ -1,0 +1,19 @@
+[
+    {
+        "action": "talk",
+        "text": "Thanks for calling. Please wait while we connect you"
+    },
+    {
+        "action": "conversation",
+        "name": "CONVERSATION_ID",
+        "startOnEnter": false,
+        "musicOnHoldUrl": ["https://nexmo-community.github.io/ncco-examples/assets/voice_api_audio_streaming.mp3"],
+        "canSpeak": [
+            "AGENT_LEG_ID",
+            "SUPERVISOR_LEG_ID"
+        ],
+        "canHear": [
+            "AGENT_LEG_ID"
+        ]
+    }
+]
