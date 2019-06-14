@@ -1,9 +1,13 @@
 [
     {
+        "action": "talk",
+        "text": "Connecting you as a supervisor"
+    },
+    {
         "action": "conversation",
         "name": "CONVERSATION_ID",
         "startOnEnter": false,
-        "musicOnHoldUrl": ["https://nexmo-community.github.io/ncco-examples/assets/voice_api_audio_streaming.mp3"],
+        "musicOnHoldUrl": ["https://pardel.ngrok.io/pno-cs.mp3"],
         "canSpeak": [
             "AGENT_LEG_ID"
         ],

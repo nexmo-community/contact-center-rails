@@ -1,5 +1,9 @@
 [
     {
+        "action": "talk",
+        "text": "Connecting you as an agent"
+    },
+    {
         "action": "conversation",
         "name": "CONVERSATION_ID",
         "startOnEnter": true,

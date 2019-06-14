@@ -22,7 +22,7 @@ class NexmoApp < ApplicationRecord
     when "call_whisper"
       "<h5>Call whisper</h5>" +
       "<pre>CONVERSATION_ID: " + (client.get("whisper_session_id") || "-") + 
-      "\nAGENT_LEG_ID: " + (client.get("whisper_session_id") || "-" ) +
+      "\nAGENT_LEG_ID: " + (client.get("whisper_agent_leg_id") || "-" ) +
       "\nSUPERVISOR_LEG_ID: " + (client.get("whisper_supervisor_leg_id") || "-") +
       "\nCUSTOMER_LEG_ID: " + (client.get("whisper_customer_leg_id") || "-") +
       "</pre>"+
