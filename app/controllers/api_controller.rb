@@ -1,9 +1,11 @@
 require "redis"
+require 'nexmo'
+
 
 class ApiController < ApplicationController
 
   skip_before_action :verify_authenticity_token
-  skip_before_action :check_nexmo_api_credentials, only: [:jwt, :whisper, :queue_conversations]
+  skip_before_action :check_nexmo_api_credentials, only: [:jwt, :whisper, :queue_conversations, :queue_transfer]
 
 
   def jwt
@@ -48,6 +50,7 @@ class ApiController < ApplicationController
     }
   end
 
+
   def queue_conversations
     render json: {error: 'mobile api key required'} and return if params['mobile_api_key'].blank?
     render json: {error: 'invalid mobile api key'} and return if params['mobile_api_key'] != ENV['MOBILE_API_KEY']
@@ -63,10 +66,24 @@ class ApiController < ApplicationController
         }
       end
     }
-
     render json: {
       conversations: conversations
     }
+  end
+
+
+  def queue_transfer
+    client = Nexmo::Client.new(
+      application_id: @nexmo_app.app_id,
+      private_key: @nexmo_app.private_key
+    )
+    ncco = {"type": "ncco", "url": [webhooks_answer_queue_transfer_url + "?conversation=#{params[:conversation]}"]}
+    begin
+      response = client.calls.transfer(params[:leg_id], destination: ncco)
+    rescue
+      puts response.inspect
+    end
+    render json: ncco
   end
 
 

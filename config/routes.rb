@@ -45,9 +45,11 @@ Rails.application.routes.draw do
   post 'api/ncco',    to: 'api#ncco'
   post  'api/whisper', to: 'api#whisper'
   post  'api/queue',   to: 'api#queue_conversations'
+  post  'api/queue/transfer',   to: 'api#queue_transfer'
 
 
   get  'webhooks/answer', to: 'webhooks#answer',    as: 'webhooks_answer'
+  get  'webhooks/answer_queue_transfer', to: 'webhooks#answer_queue_transfer',    as: 'webhooks_answer_queue_transfer'
   post 'webhooks/event',  to: 'webhooks#event',     as: 'webhooks_event'
   post 'webhooks/dtmf',  to: 'webhooks#dtmf',     as: 'webhooks_dtmf'
 

@@ -65,13 +65,16 @@ class WebhooksController < ApplicationController
     render json: ncco
   end
 
+  def answer_queue_transfer
+    ncco = Ncco.call_queue_customer_connect
+    ncco.gsub!("CONVERSATION_NAME", (params[:conversation] || ""))
+    render json: ncco
+  end
 
 
   def event
     # logger.debug request.body.read
     EventLog.create(event_type: 'voice', content: request.body.read)
-
-    puts params.inspect
 
     # Process events
 
@@ -86,10 +89,19 @@ class WebhooksController < ApplicationController
       puts "---------------------------------"
       puts "REMOVED conversation_uuid: #{params[:conversation_uuid]}"
       puts "status: #{params[:status]}"
-      client.set("queue_conversations", conversations.join(","))
+      client.set("queue_conversations", conversations.join(" || "))
     end
 
-    
+    # Conversation transfered
+    if !params[:type].blank? && params[:type] == "transfer" 
+      conversations = conversations.select do |conv|
+        !conv.include?(params[:conversation_uuid_from])
+      end
+      puts "---------------------------------"
+      puts "REMOVED conversation_uuid: #{params[:conversation_uuid_from]}"
+      puts "status: #{params[:status]}"
+      client.set("queue_conversations", conversations.join(" || "))
+    end
 
     head :ok
   end

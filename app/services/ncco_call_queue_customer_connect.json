@@ -1,0 +1,12 @@
+[
+    {
+        "action": "talk",
+        "text": "Thank you for waiting. We'll connect you to CONVERSATION_NAME now..."
+    },
+    {
+        "action": "conversation",
+        "name": "CONVERSATION_NAME"
+    }
+]
+
+
