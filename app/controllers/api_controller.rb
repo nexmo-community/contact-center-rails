@@ -52,7 +52,18 @@ class ApiController < ApplicationController
     render json: {error: 'mobile api key required'} and return if params['mobile_api_key'].blank?
     render json: {error: 'invalid mobile api key'} and return if params['mobile_api_key'] != ENV['MOBILE_API_KEY']
     client = Redis.new
-    conversations = (client.get("queue_conversations") || "").split(",")
+    conversations = (client.get("queue_conversations") || "").split(" || ").map { |info|
+      conversation_components = info.split(",")
+      if conversation_components.count == 4
+        {
+          msisdn: conversation_components[0],
+          conversation_id: conversation_components[1],
+          leg_id: conversation_components[2],
+          timestamp: conversation_components[3]
+        }
+      end
+    }
+
     render json: {
       conversations: conversations
     }

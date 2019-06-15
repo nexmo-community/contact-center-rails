@@ -56,7 +56,7 @@ class WebhooksController < ApplicationController
     else
       ncco = Ncco.call_queue_customer
       conversations = (client.get("queue_conversations") ||  "").split(" || ")
-      new_conversation = "#{params[:from]},#{params[:uuid]},#{Time.now.getutc.to_i}"
+      new_conversation = "#{params[:from]},#{params[:conversation_uuid]},#{params[:uuid]},#{Time.now.getutc.to_i}"
       puts conversations.inspect
       puts new_conversation
       conversations << new_conversation
@@ -76,26 +76,20 @@ class WebhooksController < ApplicationController
     # Process events
 
     client = Redis.new
-    conversations = (client.get("queue_conversations") || "").split(",")
+    conversations = (client.get("queue_conversations") ||  "").split(" || ")
 
      # Conversation completed
-     if !params[:status].blank? && params[:status] == "completed" && conversations.include?(params[:conversation_uuid])
+     if !params[:status].blank? && params[:status] == "completed" 
+      conversations = conversations.select do |conv|
+        !conv.include?(params[:conversation_uuid])
+      end
       puts "---------------------------------"
       puts "REMOVED conversation_uuid: #{params[:conversation_uuid]}"
       puts "status: #{params[:status]}"
-      conversations.remove(params[:conversation_uuid])
-    end
-    
-    # Conversation transfer
-    if params[:type] == "transfer" && !params[:conversation_uuid_to].blank? && !params[:conversation_uuid_from].blank?
-      conversations.remove(params[:conversation_uuid_from])
-      conversations << params[:conversation_uuid_to]
-      puts "---------------------------------"
-      puts "TRANSFER conversation_uuid: #{params[:conversation_uuid_from]}  =>  #{params[:conversation_uuid_to]}"
-      puts "status: #{params[:status]}"
+      client.set("queue_conversations", conversations.join(","))
     end
 
-    client.set("queue_conversations", conversations.join(","))
+    
 
     head :ok
   end

@@ -1,7 +1,7 @@
 [
     {
         "action": "talk",
-        "text": "Thanks for calling. All our agents are currently busy..."
+        "text": "Thanks for calling. All our agents are currently busy, but will be with you as soon as possible..."
     },
     {
         "action": "stream",
