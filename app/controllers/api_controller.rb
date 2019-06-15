@@ -1,7 +1,9 @@
+require "redis"
+
 class ApiController < ApplicationController
 
   skip_before_action :verify_authenticity_token
-  skip_before_action :check_nexmo_api_credentials, only: [:jwt]
+  skip_before_action :check_nexmo_api_credentials, only: [:jwt, :whisper, :queue_conversations]
 
 
   def jwt
@@ -29,5 +31,32 @@ class ApiController < ApplicationController
       "expires_at": @app_user.jwt_expires_at
       }
   end
+
+
+
+  def whisper
+    render json: {error: 'mobile api key required'} and return if params['mobile_api_key'].blank?
+    render json: {error: 'invalid mobile api key'} and return if params['mobile_api_key'] != ENV['MOBILE_API_KEY']
+    client = Redis.new
+    conversation_id = client.get("whisper_conversation_id") || ""
+    customer_leg_id = client.get("whisper_customer_leg_id") || ""
+    agent_leg_id = client.get("whisper_agent_leg_id") || ""
+    render json: {
+      conversation_id: conversation_id,
+      customer_leg_id: customer_leg_id,
+      agent_leg_id: agent_leg_id
+    }
+  end
+
+  def queue_conversations
+    render json: {error: 'mobile api key required'} and return if params['mobile_api_key'].blank?
+    render json: {error: 'invalid mobile api key'} and return if params['mobile_api_key'] != ENV['MOBILE_API_KEY']
+    client = Redis.new
+    conversations = (client.get("queue_conversations") || "").split(",")
+    render json: {
+      conversations: conversations
+    }
+  end
+
 
 end

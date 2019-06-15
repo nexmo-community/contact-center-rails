@@ -5,8 +5,8 @@
     },
     {
         "action": "conversation",
-        "name": "CONVERSATION_ID",
+        "name": "CONVERSATION_NAME",
         "startOnEnter": true,
-        "record": true
+        "endOnExit": true
     }
 ]

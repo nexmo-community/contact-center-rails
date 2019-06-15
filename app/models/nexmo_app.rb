@@ -21,7 +21,7 @@ class NexmoApp < ApplicationRecord
       "<h5>Joe selection</h5><pre>" + Ncco.ivr_joe + "</pre>"
     when "call_whisper"
       "<h5>Call whisper</h5>" +
-      "<pre>CONVERSATION_ID: " + (client.get("whisper_session_id") || "-") + 
+      "<pre>CONVERSATION_ID: " + (client.get("whisper_conversation_id") || "-") + 
       "\nAGENT_LEG_ID: " + (client.get("whisper_agent_leg_id") || "-" ) +
       "\nSUPERVISOR_LEG_ID: " + (client.get("whisper_supervisor_leg_id") || "-") +
       "\nCUSTOMER_LEG_ID: " + (client.get("whisper_customer_leg_id") || "-") +
@@ -31,10 +31,10 @@ class NexmoApp < ApplicationRecord
       "<h6>Supervisor</h6><pre>" + Ncco.call_whisper_supervisor + "</pre>"
     when "call_queue"
       "<h5>Call Queueing</h5>" +
-      "<pre>CONVERSATION_ID: " + (client.get("queue_session_id") || "-") +
+      "<h6>Queued Calls: </h6><pre>" + (client.get("queue_conversations") || "").split(" || ").join("\n") +
       "</pre>"+
-      "<h6>Customer</h6><pre>" + Ncco.call_queue_customer + "</pre>" +
-      "<h6>Agent</h6><pre>" + Ncco.call_queue_agent + "</pre>"
+      "<h6>Customer NCCO</h6><pre>" + Ncco.call_queue_customer + "</pre>" +
+      "<h6>Agent NCCO</h6><pre>" + Ncco.call_queue_agent + "</pre>"
     else 
       "<h5>Not set</h5>"
     end

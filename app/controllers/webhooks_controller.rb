@@ -23,25 +23,25 @@ class WebhooksController < ApplicationController
     client = Redis.new
     case params[:from_user]
     when 'Jane'
-      client.set("whisper_session_id", params[:conversation_uuid]) if client.get("whisper_session_id").blank?
+      client.set("whisper_conversation_id", params[:conversation_uuid]) if client.get("whisper_conversation_id").blank?
       client.set("whisper_agent_leg_id", params[:uuid])
       ncco = Ncco.call_whisper_agent
     when 'Joe'
-      client.set("whisper_session_id", params[:conversation_uuid]) if client.get("whisper_session_id").blank?
+      client.set("whisper_conversation_id", params[:conversation_uuid]) if client.get("whisper_conversation_id").blank?
       client.set("whisper_supervisor_leg_id", params[:uuid])
       ncco = Ncco.call_whisper_supervisor
     else
-      client.set("whisper_session_id", params[:conversation_uuid]) if client.get("whisper_session_id").blank?
+      client.set("whisper_conversation_id", params[:conversation_uuid]) if client.get("whisper_conversation_id").blank?
       client.set("whisper_customer_leg_id", params[:uuid])
       ncco = Ncco.call_whisper_customer
     end 
 
-    if client.get("whisper_session_id").blank?
+    if client.get("whisper_conversation_id").blank?
       render json: { error: "Conversation not found" }, status: :bad_request
       return
     end
     
-    ncco.gsub!("CONVERSATION_ID", client.get("whisper_session_id"))
+    ncco.gsub!("CONVERSATION_ID", client.get("whisper_conversation_id"))
     ncco.gsub!("AGENT_LEG_ID", client.get("whisper_agent_leg_id") || "")
     ncco.gsub!("SUPERVISOR_LEG_ID", client.get("whisper_supervisor_leg_id") || "")
     ncco.gsub!("CUSTOMER_LEG_ID", client.get("whisper_customer_leg_id") || "")
@@ -50,13 +50,18 @@ class WebhooksController < ApplicationController
 
   def answer_queue
     client = Redis.new
-    ncco = Ncco.call_queue_customer
     if params[:from_user] == "Jane"
       ncco = Ncco.call_queue_agent
+      ncco.gsub!("CONVERSATION_NAME", "AGENT-#{params[:from_user]}")
     else
-      client.set("queue_session_id", params[:conversation_uuid])
+      ncco = Ncco.call_queue_customer
+      conversations = (client.get("queue_conversations") ||  "").split(" || ")
+      new_conversation = "#{params[:from]},#{params[:uuid]},#{Time.now.getutc.to_i}"
+      puts conversations.inspect
+      puts new_conversation
+      conversations << new_conversation
+      client.set("queue_conversations", conversations.join(" || "))
     end
-    ncco.gsub!("CONVERSATION_ID", client.get("queue_session_id") || "")
     render json: ncco
   end
 
@@ -65,8 +70,36 @@ class WebhooksController < ApplicationController
   def event
     # logger.debug request.body.read
     EventLog.create(event_type: 'voice', content: request.body.read)
+
+    puts params.inspect
+
+    # Process events
+
+    client = Redis.new
+    conversations = (client.get("queue_conversations") || "").split(",")
+
+     # Conversation completed
+     if !params[:status].blank? && params[:status] == "completed" && conversations.include?(params[:conversation_uuid])
+      puts "---------------------------------"
+      puts "REMOVED conversation_uuid: #{params[:conversation_uuid]}"
+      puts "status: #{params[:status]}"
+      conversations.remove(params[:conversation_uuid])
+    end
+    
+    # Conversation transfer
+    if params[:type] == "transfer" && !params[:conversation_uuid_to].blank? && !params[:conversation_uuid_from].blank?
+      conversations.remove(params[:conversation_uuid_from])
+      conversations << params[:conversation_uuid_to]
+      puts "---------------------------------"
+      puts "TRANSFER conversation_uuid: #{params[:conversation_uuid_from]}  =>  #{params[:conversation_uuid_to]}"
+      puts "status: #{params[:status]}"
+    end
+
+    client.set("queue_conversations", conversations.join(","))
+
     head :ok
   end
+
 
   def dtmf
     # params.each do |key,value|

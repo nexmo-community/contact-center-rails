@@ -4,9 +4,8 @@
         "text": "Thanks for calling. All our agents are currently busy..."
     },
     {
-        "action": "conversation",
-        "name": "CONVERSATION_ID",
-        "startOnEnter": false,
-        "musicOnHoldUrl": ["https://pardel.ngrok.io/pno-cs.mp3"]
+        "action": "stream",
+        "loop": 0,
+        "streamUrl": ["https://pardel.ngrok.io/pno-cs.mp3"]
     }
 ]

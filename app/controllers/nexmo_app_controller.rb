@@ -84,7 +84,7 @@ class NexmoAppController < ApplicationController
   end
   def update_ncco_whisper
     client = Redis.new
-    client.del("whisper_session_id")
+    client.del("whisper_conversation_id")
     client.del("whisper_agent_leg_id")
     client.del("whisper_supervisor_leg_id")
     client.del("whisper_customer_leg_id")
@@ -94,7 +94,7 @@ class NexmoAppController < ApplicationController
 
   def update_ncco_queue
     client = Redis.new
-    client.del("queue_session_id")
+    client.del("queue_conversations")
     @nexmo_app.update(voice_answer_type: :call_queue)
     redirect_to app_url, notice: "NCCO was successfully updated."
   end

@@ -43,6 +43,8 @@ Rails.application.routes.draw do
   post 'api/jwt',     to: 'api#jwt'
   post 'api/users',   to: 'api#users'
   post 'api/ncco',    to: 'api#ncco'
+  post  'api/whisper', to: 'api#whisper'
+  post  'api/queue',   to: 'api#queue_conversations'
 
 
   get  'webhooks/answer', to: 'webhooks#answer',    as: 'webhooks_answer'
