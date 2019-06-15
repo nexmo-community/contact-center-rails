@@ -7,36 +7,8 @@ class WebhooksController < ApplicationController
 
 
   def answer
-    if @nexmo_app.call_whisper?
-      client = Redis.new
-
-      case params[:from_user]
-      when 'Jane'
-        client.set("whisper_session_id", params[:conversation_uuid]) if client.get("whisper_session_id").blank?
-        client.set("whisper_agent_leg_id", params[:uuid])
-        ncco = Ncco.call_whisper_agent
-      when 'Joe'
-        client.set("whisper_session_id", params[:conversation_uuid]) if client.get("whisper_session_id").blank?
-        client.set("whisper_supervisor_leg_id", params[:uuid])
-        ncco = Ncco.call_whisper_supervisor
-      else
-        client.set("whisper_session_id", params[:conversation_uuid]) if client.get("whisper_session_id").blank?
-        client.set("whisper_customer_leg_id", params[:uuid])
-        ncco = Ncco.call_whisper_customer
-      end 
-
-      if client.get("whisper_session_id").blank?
-        render json: { error: "Conversation not found" }, status: :bad_request
-        return
-      end
-      
-      ncco.gsub!("CONVERSATION_ID", client.get("whisper_session_id"))
-      ncco.gsub!("AGENT_LEG_ID", client.get("whisper_agent_leg_id") || "")
-      ncco.gsub!("SUPERVISOR_LEG_ID", client.get("whisper_supervisor_leg_id") || "")
-      ncco.gsub!("CUSTOMER_LEG_ID", client.get("whisper_customer_leg_id") || "")
-      render json: ncco
-      return
-    end
+    answer_queue and return if @nexmo_app.call_queue?
+    answer_whisper and return if @nexmo_app.call_whisper?
 
     ncco = @nexmo_app.voice_answer_ncco({webhooks_dtmf_url: webhooks_dtmf_url})
     if ncco.blank?
@@ -46,6 +18,49 @@ class WebhooksController < ApplicationController
     ncco.gsub!("PARAMS_TO", (params[:to] || ""))
     render json: ncco
   end
+
+  def answer_whisper
+    client = Redis.new
+    case params[:from_user]
+    when 'Jane'
+      client.set("whisper_session_id", params[:conversation_uuid]) if client.get("whisper_session_id").blank?
+      client.set("whisper_agent_leg_id", params[:uuid])
+      ncco = Ncco.call_whisper_agent
+    when 'Joe'
+      client.set("whisper_session_id", params[:conversation_uuid]) if client.get("whisper_session_id").blank?
+      client.set("whisper_supervisor_leg_id", params[:uuid])
+      ncco = Ncco.call_whisper_supervisor
+    else
+      client.set("whisper_session_id", params[:conversation_uuid]) if client.get("whisper_session_id").blank?
+      client.set("whisper_customer_leg_id", params[:uuid])
+      ncco = Ncco.call_whisper_customer
+    end 
+
+    if client.get("whisper_session_id").blank?
+      render json: { error: "Conversation not found" }, status: :bad_request
+      return
+    end
+    
+    ncco.gsub!("CONVERSATION_ID", client.get("whisper_session_id"))
+    ncco.gsub!("AGENT_LEG_ID", client.get("whisper_agent_leg_id") || "")
+    ncco.gsub!("SUPERVISOR_LEG_ID", client.get("whisper_supervisor_leg_id") || "")
+    ncco.gsub!("CUSTOMER_LEG_ID", client.get("whisper_customer_leg_id") || "")
+    render json: ncco
+  end
+
+  def answer_queue
+    client = Redis.new
+    ncco = Ncco.call_queue_customer
+    if params[:from_user] == "Jane"
+      ncco = Ncco.call_queue_agent
+    else
+      client.set("queue_session_id", params[:conversation_uuid])
+    end
+    ncco.gsub!("CONVERSATION_ID", client.get("queue_session_id") || "")
+    render json: ncco
+  end
+
+
 
   def event
     # logger.debug request.body.read

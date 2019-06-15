@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   post 'app/ncco/outbound', to: 'nexmo_app#update_ncco_outbound', as: 'app_ncco_outbound'
   post 'app/ncco/ivr',      to: 'nexmo_app#update_ncco_ivr',      as: 'app_ncco_ivr'
   post 'app/ncco/whisper',  to: 'nexmo_app#update_ncco_whisper',  as: 'app_ncco_whisper'
+  post 'app/ncco/queue',    to: 'nexmo_app#update_ncco_queue',    as: 'app_ncco_queue'
 
   get  'numbers',                         to: 'numbers#index',    as: 'numbers'
   get  'numbers/search',                  to: 'numbers#search',   as: 'numbers_search_get'

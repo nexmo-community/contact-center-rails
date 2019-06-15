@@ -92,6 +92,12 @@ class NexmoAppController < ApplicationController
     redirect_to app_url, notice: "NCCO was successfully updated."
   end
 
+  def update_ncco_queue
+    client = Redis.new
+    client.del("queue_session_id")
+    @nexmo_app.update(voice_answer_type: :call_queue)
+    redirect_to app_url, notice: "NCCO was successfully updated."
+  end
 
 
   private

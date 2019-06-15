@@ -4,7 +4,7 @@ require "redis"
 class NexmoApp < ApplicationRecord
 
   validates :name, presence: true
-  enum voice_answer_type: [:inbound_call, :outbound_call, :ivr, :call_whisper]
+  enum voice_answer_type: [:inbound_call, :outbound_call, :ivr, :call_whisper, :call_queue]
   
 
   def voice_answer_ncco_descriptive(params)
@@ -29,7 +29,12 @@ class NexmoApp < ApplicationRecord
       "<h6>Customer</h6><pre>" + Ncco.call_whisper_customer + "</pre>" +
       "<h6>Agent</h6><pre>" + Ncco.call_whisper_agent + "</pre>" +
       "<h6>Supervisor</h6><pre>" + Ncco.call_whisper_supervisor + "</pre>"
-
+    when "call_queue"
+      "<h5>Call Queueing</h5>" +
+      "<pre>CONVERSATION_ID: " + (client.get("queue_session_id") || "-") +
+      "</pre>"+
+      "<h6>Customer</h6><pre>" + Ncco.call_queue_customer + "</pre>" +
+      "<h6>Agent</h6><pre>" + Ncco.call_queue_agent + "</pre>"
     else 
       "<h5>Not set</h5>"
     end
@@ -43,8 +48,6 @@ class NexmoApp < ApplicationRecord
       Ncco.outbound(self)
     when "ivr"
       Ncco.ivr(self, params[:webhooks_dtmf_url])
-    when "call_whisper"
-      ""
     else 
       ""
     end

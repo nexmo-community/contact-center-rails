@@ -42,5 +42,13 @@ class Ncco
     return ncco
   end
 
+  def self.call_queue_customer
+    ncco = File.read(Rails.root.join('app', 'services', 'ncco_call_queue_customer.json'))
+    return ncco
+  end
+  def self.call_queue_agent
+    ncco = File.read(Rails.root.join('app', 'services', 'ncco_call_queue_agent.json'))
+    return ncco
+  end
 
 end
