@@ -83,8 +83,25 @@ class WebhooksController < ApplicationController
     client = Redis.new
     conversations = (client.get("queue_conversations") ||  "").split(" || ")
 
-     # Conversation completed
-     if !params[:status].blank? && params[:status] == "completed" 
+    # Conversation started - update info 
+    if !params[:status].blank? && params[:status] == "started" 
+      conversations = conversations.map do |conv|
+        convArray = conv.split(",")
+        if convArray.count == 4 && convArray[1] == params[:conversation_uuid] 
+          "#{convArray[0]},#{convArray[1]},#{params[:uuid]},#{convArray[3]}"
+        else
+          conv
+        end
+      end
+      puts "---------------------------------"
+      puts "UPDATED conversation_uuid: #{params[:conversation_uuid]}"
+      puts "status: #{params[:status]}"
+      client.set("queue_conversations", conversations.join(" || "))
+    end
+
+
+    # Conversation completed
+    if !params[:status].blank? && params[:status] == "completed" 
       conversations = conversations.select do |conv|
         !conv.include?(params[:conversation_uuid])
       end
