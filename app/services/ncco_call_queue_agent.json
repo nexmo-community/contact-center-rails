@@ -1,7 +1,7 @@
 [
     {
         "action": "talk",
-        "text": "Connecting you as an agent"
+        "text": "Connecting you as an agent - Conversation: CONVERSATION_NAME"
     },
     {
         "action": "conversation",
