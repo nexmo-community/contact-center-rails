@@ -23,7 +23,7 @@
           <span class="btn btn-sm btn-outline-primary" id="nnco-connect-outbound-call">Call a phone number</span>
           <span class="btn btn-sm btn-outline-primary" id="nnco-connect-agent-ivr">Agent IVR</span>
         </p>
-        <%= form.text_area "nexmo_app[voice_answer_ncco]", id: 'voice_answer_ncco', rows: 20, value: @nexmo_app.voice_answer_ncco, class:"form-control pre", required: true %>
+        <%= form.text_area "nexmo_app[voice_answer_ncco]", id: 'voice_answer_ncco', rows: 20, value: @nexmo_app.voice_answer_ncco({webhooks_dtmf_url: webhooks_dtmf_url}), class:"form-control pre", required: true %>
       </div>
 
       <%= form.submit "Update", class: 'btn btn-primary' %>
