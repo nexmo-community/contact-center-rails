@@ -13,6 +13,7 @@
     },
     {
         "action": "input",
-        "eventUrl": ["DTMF_URL"]
+        "eventUrl": ["DTMF_URL"],
+        "timeout": "45"
     }
 ]
