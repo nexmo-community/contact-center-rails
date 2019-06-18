@@ -4,13 +4,15 @@ require "redis"
 class NexmoApp < ApplicationRecord
 
   validates :name, presence: true
-  enum voice_answer_type: [:inbound_call, :outbound_call, :ivr, :call_whisper, :call_queue]
+  enum voice_answer_type: [:custom, :inbound_call, :outbound_call, :ivr, :call_whisper, :call_queue]
   
 
   def voice_answer_ncco_descriptive(params)
     client = Redis.new
     
     case self.voice_answer_type 
+    when "custom"
+      '<h5>Custom NCCO &nbsp; <a href="/app/edit" class="btn btn-outline-primary btn-sm">Edit</a></h5><pre>' + self.voice_answer_custom_ncco + "</pre>"
     when "inbound_call"
       "<h5>Inbound call</h5><pre>" + Ncco.inbound + "</pre>"
     when "outbound_call"
@@ -43,6 +45,8 @@ class NexmoApp < ApplicationRecord
 
   def voice_answer_ncco(params)
     case self.voice_answer_type 
+    when "custom"
+      self.voice_answer_custom_ncco
     when "inbound_call"
       Ncco.inbound
     when "outbound_call"

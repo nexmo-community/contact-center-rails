@@ -17,13 +17,8 @@
   <div class="row justify-content-center">
     <div class="col-12 col-lg-8 text-center">
       <div class="form-group">
-        <h3 class="mt-4">Answer NCCO</h3>
-        <p>
-          <span class="btn btn-sm btn-outline-primary" id="nnco-connect-inbound-call">Connect to Agent</span>
-          <span class="btn btn-sm btn-outline-primary" id="nnco-connect-outbound-call">Call a phone number</span>
-          <span class="btn btn-sm btn-outline-primary" id="nnco-connect-agent-ivr">Agent IVR</span>
-        </p>
-        <%= form.text_area "nexmo_app[voice_answer_ncco]", id: 'voice_answer_ncco', rows: 20, value: @nexmo_app.voice_answer_ncco({webhooks_dtmf_url: webhooks_dtmf_url}), class:"form-control pre", required: true %>
+        <h3 class="mt-4">Custom Answer NCCO</h3>
+        <%= form.text_area "nexmo_app[voice_answer_custom_ncco]", id: 'voice_answer_custom_ncco', rows: 20, value: @nexmo_app.voice_answer_custom_ncco, class:"form-control pre", required: true %>
       </div>
 
       <%= form.submit "Update", class: 'btn btn-primary' %>
@@ -33,30 +28,6 @@
   </div>
 
 <% end %>
-
-<script>
-const targetNCCO = document.querySelector("#voice_answer_ncco");
-
-document.querySelector("#nnco-connect-inbound-call").addEventListener('click', function(event){
-  targetNCCO.value = `<%= raw Ncco.inbound %>`;
-  event.preventDefault();
-})
-
-document.querySelector("#nnco-connect-outbound-call").addEventListener('click', function(event){
-  targetNCCO.value = `<%= raw Ncco.outbound(@nexmo_app) %>`;
-  event.preventDefault();
-});
-
-document.querySelector("#nnco-connect-agent-ivr").addEventListener('click', function(event){
-  targetNCCO.value = `<%= raw Ncco.ivr(@nexmo_app, @dtmf_url) %>`;
-  event.preventDefault();
-})
-
-
-
-</script>
-
-
 
 
 

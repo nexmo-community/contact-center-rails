@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_14_092424) do
+ActiveRecord::Schema.define(version: 2019_06_18_143316) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 2019_06_14_092424) do
     t.string "number_msisdn"
     t.string "number_country"
     t.integer "voice_answer_type", default: 0
+    t.text "voice_answer_custom_ncco", default: "[]"
     t.index ["app_id"], name: "index_nexmo_apps_on_app_id", unique: true
   end
 

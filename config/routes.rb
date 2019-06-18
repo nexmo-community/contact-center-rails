@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   get  'app/private_key', to: 'nexmo_app#private_key',  as: 'app_private_key'
   get  'app/public_key',  to: 'nexmo_app#public_key',   as: 'app_public_key'
 
+  post 'app/ncco/custom',   to: 'nexmo_app#update_ncco_custom',  as: 'app_ncco_custom'
   post 'app/ncco/inbound',  to: 'nexmo_app#update_ncco_inbound',  as: 'app_ncco_inbound'
   post 'app/ncco/outbound', to: 'nexmo_app#update_ncco_outbound', as: 'app_ncco_outbound'
   post 'app/ncco/ivr',      to: 'nexmo_app#update_ncco_ivr',      as: 'app_ncco_ivr'

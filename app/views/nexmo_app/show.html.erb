@@ -50,12 +50,13 @@
   <th>NCCO</th>
   <td>
     <p>Change for: 
-      <%= link_to "Inbound Call", app_ncco_inbound_path, method: :post, class: 'btn btn-outline-primary btn-sm' %>
-      <%= link_to "Outbound Call", app_ncco_outbound_path, method: :post, class: 'btn btn-outline-primary btn-sm' %>
-      <%= link_to "IVR", app_ncco_ivr_path, method: :post, class: 'btn btn-outline-primary btn-sm' %>
+      <%= link_to "Custom", app_ncco_custom_path, method: :post, class: 'btn btn' + ( @nexmo_app.custom? ? '' : '-outline') + '-primary btn-sm' %>
+      <%= link_to "Inbound Call", app_ncco_inbound_path, method: :post, class: 'btn btn' + ( @nexmo_app.inbound_call? ? '' : '-outline') + '-primary btn-sm' %>
+      <%= link_to "Outbound Call", app_ncco_outbound_path, method: :post, class: 'btn btn' + ( @nexmo_app.outbound_call? ? '' : '-outline') + '-primary btn-sm' %>
+      <%= link_to "IVR", app_ncco_ivr_path, method: :post, class: 'btn btn' + ( @nexmo_app.ivr? ? '' : '-outline') + '-primary btn-sm' %>
       <!--
-      <%= link_to "Call Whisper", app_ncco_whisper_path, method: :post, class: 'btn btn-outline-primary btn-sm' %>
-      <%= link_to "Call Queueing", app_ncco_queue_path, method: :post, class: 'btn btn-outline-primary btn-sm' %>
+      <%= link_to "Call Whisper", app_ncco_whisper_path, method: :post, class: 'btn btn' + ( @nexmo_app.call_whisper? ? '' : '-outline') + '-primary btn-sm' %>
+      <%= link_to "Call Queueing", app_ncco_queue_path, method: :post, class: 'btn btn' + ( @nexmo_app.call_queue? ? '' : '-outline') + '-primary btn-sm' %>
       -->
     </p>
     <%= raw @nexmo_app.voice_answer_ncco_descriptive({webhooks_dtmf_url: webhooks_dtmf_url}) %>
