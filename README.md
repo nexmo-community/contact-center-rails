@@ -11,4 +11,6 @@ This is one of the components required for Nexmo's ["Contact Center Use Case"](h
 </a>
 
 
-# on hold music from: https://ccrma.stanford.edu/~jos/pasp/Sound_Examples.html
+## Resources
+
+On hold music from: https://ccrma.stanford.edu/~jos/pasp/Sound_Examples.html
