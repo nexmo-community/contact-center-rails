@@ -56,8 +56,8 @@
       <%= link_to "IVR", app_ncco_ivr_path, method: :post, class: 'btn btn' + ( @nexmo_app.ivr? ? '' : '-outline') + '-primary btn-sm' %>
       <!--
       <%= link_to "Call Whisper", app_ncco_whisper_path, method: :post, class: 'btn btn' + ( @nexmo_app.call_whisper? ? '' : '-outline') + '-primary btn-sm' %>
-      <%= link_to "Call Queueing", app_ncco_queue_path, method: :post, class: 'btn btn' + ( @nexmo_app.call_queue? ? '' : '-outline') + '-primary btn-sm' %>
       -->
+      <%= link_to "Call Queueing", app_ncco_queue_path, method: :post, class: 'btn btn' + ( @nexmo_app.call_queue? ? '' : '-outline') + '-primary btn-sm' %>
     </p>
     <%= raw @nexmo_app.voice_answer_ncco_descriptive({webhooks_dtmf_url: webhooks_dtmf_url}) %>
   </td>

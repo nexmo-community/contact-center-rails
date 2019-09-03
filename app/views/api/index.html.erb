@@ -45,30 +45,28 @@
   <div class="col-12 col-md-6">
     <h4 class="h6 mt-4">Response <span class="badge badge-success">application/json</span></h4>
     <pre>{
-    "user_id": "USR-77d8faa0-...",
-    "user_name": "Jane",
-    "jwt": "eyJh...",
-    "expires_at": "2019-03-13T14:53:06.819Z"
+  "user_id": "USR-77d8faa0-...",
+  "user_name": "Jane",
+  "jwt": "eyJh...",
+  "expires_at": "2019-03-13T14:53:06.819Z"
 }</pre>
   </div>
 </div>
 
 
+<h2 class="mt-5 mb-4">Call Queueing</h2>
+
+<h3>Retrieve list of waiting calls</h3>
+
+<div class="input-group">
+  <div class="input-group-prepend">
+    <div class="input-group-text input-group-text-post">POST</div>
+  </div>
+  <div class="form-control form-control-url"><%= "#{request.protocol}#{request.host_with_port}" %>/api/queue</div>
+</div>
 <div class="row">
-
-<!--
-  <div class="col-5 offset-1">
-  
-    <h2 class="mt-4 mb-2">Available users</h2>
-    <div class="input-group">
-      <div class="input-group-prepend">
-        <div class="input-group-text input-group-text-post">POST</div>
-      </div>
-      <div class="form-control form-control-url"><%= "#{request.protocol}#{request.host_with_port}" %>/api/users</div>
-    </div>
-
-    <h4 class="h6 mt-4">Request body <span class="badge badge-success">application/json</span></h4>
-
+  <div class="col-12 col-md-6">
+    <h4 class="h6 mt-4">Request parameters</h4>
     <table class="table table-sm mt-4 small">
     <thead>
       <tr>
@@ -83,35 +81,37 @@
         <td>string</td>
         <td>✓</td>
       </tr>
-      </tr>
     </tbody>
     </table>
-
+  </div>
+  <div class="col-12 col-md-6">
     <h4 class="h6 mt-4">Response <span class="badge badge-success">application/json</span></h4>
-    <pre>[
+    <pre>{
+  "conversations":[
     {
-      "user_id": "USR-77d8faa0-...",
-      "user_name": "Jane"
+      "msisdn":"447817135360",
+      "conversation_id":"CON-8972ea6a-729a-4087-bdd7-eeadd44932bb",
+      "leg_id":"658bd115ead87bf526686ff5bb785cda",
+      "timestamp":"1567514289"
     }
   ]
-    </pre>
-
+}</pre>
   </div>
--->
+</div>
 
 
-<!--
-  <div class="col-12 col-lg-6">
-    <h2 class="mt-5 mb-2">NCCO</h2>
-    <div class="input-group">
-      <div class="input-group-prepend">
-        <div class="input-group-text input-group-text-post">POST</div>
-      </div>
-      <div class="form-control form-control-url"><%= "#{request.protocol}#{request.host_with_port}" %>/api/ncco</div>
-    </div>
+<h3>Transfer a waiting call</h3>
 
-    <h4 class="h6 mt-4">Request body <span class="badge badge-success">application/json</span></h4>
-    <table class="table table-sm mt-2 small">
+<div class="input-group">
+  <div class="input-group-prepend">
+    <div class="input-group-text input-group-text-post">POST</div>
+  </div>
+  <div class="form-control form-control-url"><%= "#{request.protocol}#{request.host_with_port}" %>/api/queue/transfer</div>
+</div>
+<div class="row">
+  <div class="col-12 col-md-6">
+    <h4 class="h6 mt-4">Request parameters</h4>
+    <table class="table table-sm mt-4 small">
     <thead>
       <tr>
         <th>Key</th>
@@ -125,30 +125,30 @@
         <td>string</td>
         <td>✓</td>
       </tr>
+      <tr>
+        <td><strong>leg_id</strong></td>
+        <td>string</td>
+        <td>✓</td>
+      </tr>
+      <tr>
+        <td><strong>conversation</strong></td>
+        <td>string</td>
+        <td>✓</td>
       </tr>
     </tbody>
     </table>
-
-    <h4 class="h6 mt-4">Response <span class="badge badge-success">application/json</span></h4>
-    <pre>[
-      {
-          "action": "talk",
-          "text": "Thank you for calling Jane"
-      },
-      {
-          "action": "connect",
-          "endpoint": [
-              {
-                  "type": "app",
-                  "user": "jane"
-              }
-          ]
-      }
-  ]
-        
-    </pre>
-
   </div>
--->
+  <div class="col-12 col-md-6">
+    <h4 class="h6 mt-4">Response <span class="badge badge-success">application/json</span></h4>
+    <pre>{
+  "status":"OK"
+}</pre>
 
+    or
+    <pre>{
+  "status":"Something went wrong"
+}</pre>
+  </div>
 </div>
+
+

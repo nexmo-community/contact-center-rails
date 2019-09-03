@@ -77,13 +77,31 @@ class ApiController < ApplicationController
       application_id: @nexmo_app.app_id,
       private_key: @nexmo_app.private_key
     )
-    ncco = {"type": "ncco", "url": [webhooks_answer_queue_transfer_url + "?conversation=#{params[:conversation]}"]}
+    destination = {
+      "type": "ncco", 
+      "ncco": [
+        {
+            "action": "talk",
+            "text": "Thank you for waiting. We'll connect you to " + params[:conversation] + " now..."
+        },
+        {
+            "action": "conversation",
+            "name": params[:conversation]
+        }
+      ]
+    }
     begin
-      response = client.calls.transfer(params[:leg_id], destination: ncco)
+      response = client.calls.transfer(params[:leg_id], destination: destination)
+      render json: {
+        status: "OK"
+        }
+      return
     rescue
       puts response.inspect
     end
-    render json: ncco
+    render json: {
+      status: "Something went wrong"
+    }
   end
 
 
