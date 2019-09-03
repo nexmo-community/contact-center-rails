@@ -6,7 +6,6 @@
     {
         "action": "conversation",
         "name": "CONVERSATION_NAME",
-        "startOnEnter": true,
-        "endOnExit": true
+        "startOnEnter": true
     }
 ]

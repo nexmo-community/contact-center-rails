@@ -52,7 +52,7 @@ class WebhooksController < ApplicationController
     client = Redis.new
     if !params[:from_user].blank?
       ncco = Ncco.call_queue_agent
-      conv_name = "AGENT-#{params[:from_user]}-125"
+      conv_name = "AGENT-#{params[:from_user]}"
       puts "CONVERSATION_NAME: #{conv_name}"
       ncco.gsub!("CONVERSATION_NAME", conv_name)
     else
