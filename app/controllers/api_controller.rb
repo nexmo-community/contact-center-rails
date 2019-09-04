@@ -5,7 +5,7 @@ require 'nexmo'
 class ApiController < ApplicationController
 
   skip_before_action :verify_authenticity_token
-  skip_before_action :check_nexmo_api_credentials, only: [:jwt, :whisper, :queue_conversations, :queue_transfer]
+  skip_before_action :check_nexmo_api_credentials, only: [:jwt, :whisper, :queue_conversations, :queue_transfer, :queue_ncco]
 
 
   def jwt
@@ -73,6 +73,8 @@ class ApiController < ApplicationController
 
 
   def queue_transfer
+    render json: { status: "Missing leg id" } and return if params[:leg_id].blank?
+
     client = Nexmo::Client.new(
       application_id: @nexmo_app.app_id,
       private_key: @nexmo_app.private_key
@@ -104,5 +106,30 @@ class ApiController < ApplicationController
     }
   end
 
+  def queue_ncco
+    render json: { status: "Missing leg id" } and return if params[:leg_id].blank?
+
+    client = Nexmo::Client.new(
+      application_id: @nexmo_app.app_id,
+      private_key: @nexmo_app.private_key
+    )
+    begin
+      ncco = JSON.parse(request.body.read)
+      destination = {
+        "type": "ncco", 
+        "ncco": ncco
+      }
+      response = client.calls.transfer(params[:leg_id], destination: destination)
+      render json: {
+        status: "OK"
+        }
+      return
+    rescue
+      puts response.inspect
+    end
+    render json: {
+      status: "Something went wrong"
+    }
+  end
 
 end

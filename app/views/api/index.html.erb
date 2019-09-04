@@ -152,3 +152,66 @@
 </div>
 
 
+
+
+
+
+<h3>Send NCCO to a waiting call</h3>
+
+<div class="input-group">
+  <div class="input-group-prepend">
+    <div class="input-group-text input-group-text-post">POST</div>
+  </div>
+  <div class="form-control form-control-url"><%= "#{request.protocol}#{request.host_with_port}" %>/api/queue/queue</div>
+</div>
+<div class="row">
+  <div class="col-12 col-md-6">
+    <h4 class="h6 mt-4">Request parameters</h4>
+    <table class="table table-sm mt-4 small">
+    <thead>
+      <tr>
+        <th>Key</th>
+        <th>Type</th>
+        <th>Required</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>mobile_api_key</strong></td>
+        <td>string</td>
+        <td>✓</td>
+      </tr>
+      <tr>
+        <td><strong>leg_id</strong></td>
+        <td>string</td>
+        <td>✓</td>
+      </tr>
+    </tbody>
+    </table>
+    <h4 class="h6 mt-4">Request Body (NCCO) <span class="badge badge-success">application/json</span></h4>
+    eg:
+    <pre>[
+  {
+    "action": "talk",
+    "text": "Thank you for waiting. We'll connect you now..."
+  },
+  {
+    "action": "conversation",
+    "name": "AGENT-Jane"
+  }
+]</pre>
+  </div>
+  <div class="col-12 col-md-6">
+    <h4 class="h6 mt-4">Response <span class="badge badge-success">application/json</span></h4>
+    <pre>{
+  "status":"OK"
+}</pre>
+    or
+    <pre>{
+  "status":"Something went wrong"
+}</pre>
+  </div>
+</div>
+
+
+

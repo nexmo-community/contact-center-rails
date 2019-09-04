@@ -47,6 +47,7 @@ Rails.application.routes.draw do
   post  'api/whisper', to: 'api#whisper'
   post  'api/queue',   to: 'api#queue_conversations'
   post  'api/queue/transfer',   to: 'api#queue_transfer'
+  post  'api/queue/ncco',   to: 'api#queue_ncco'
 
 
   get  'webhooks/answer', to: 'webhooks#answer',    as: 'webhooks_answer'
