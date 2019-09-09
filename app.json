@@ -11,6 +11,12 @@
       "generator": "secret"
     }
   },
+  "addons": [
+    {
+      "plan": "heroku-redis:hobby-dev",
+      "as": "REDIS"
+    }
+  ],
   "scripts": {
     "postdeploy": "bundle exec rails db:migrate"
   },
