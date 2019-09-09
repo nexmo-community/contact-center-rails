@@ -19,6 +19,14 @@ class AuthController < ApplicationController
       redirect_to root_url, alert: "Api credentials are invalid..."
       return
     end
+
+    # Check if the user is logged in
+    balance = NexmoApi.balance(api_key, api_secret)
+    if balance.blank?
+      redirect_to root_url, alert: "Api credentials are invalid..."
+      return
+    end
+
     # if an app is present, check if belongs to the user logging in
     if NexmoApp.all.count > 0
       existing_apps = NexmoApi.apps(api_key, api_secret)
