@@ -9,7 +9,7 @@
 </div>
 
 <% if @available_numbers.blank? %>
-  <p>Nothing found</p>
+  <p>Sorry, no numbers found.</p>
 <% else %>
   <table class="table table-sm table-borderless table-striped table-hover">
     <thead>
@@ -30,7 +30,7 @@
           <td><%= number.country %></td>
           <td><%= number.features %></td>
           <td><%= number.type %></td>
-          <td><%= number.cost %></td>
+          <td>&euro; <%= number.cost %></td>
           <td>
             <%= form_tag (numbers_buy_path) do %>
             <%= hidden_field_tag(:country, @country) %>

@@ -87,7 +87,7 @@ class NexmoApi
     response = Net::HTTP.start(uri.hostname, uri.port, :use_ssl => true) {|http|
       http.request(request)
     }
-    return nil unless response.is_a?(Net::HTTPSuccess)
+    return [] unless response.is_a?(Net::HTTPSuccess)
     json_object = JSON.parse(response.body, object_class: OpenStruct)
     return json_object.numbers
   end

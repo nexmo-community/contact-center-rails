@@ -1,5 +1,5 @@
     <%= form_tag (numbers_search_path) do %>
       Buy number in 
-      <%= select_tag(:country, options_for_select(["GB", "USA", "FR", "GE"], country)) %>
+      <%= select_tag(:country, options_for_select(["GB", "USA", "FR"], country)) %>
       <%= submit_tag("Search", class: 'btn btn-sm btn-primary') %>
     <% end %>
