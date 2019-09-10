@@ -25,15 +25,15 @@ class WebhooksController < ApplicationController
     when 'Jane'
       client.set("whisper_conversation_id", params[:conversation_uuid]) if client.get("whisper_conversation_id").blank?
       client.set("whisper_agent_leg_id", params[:uuid])
-      ncco = Ncco.call_whisper_agent
+      ncco = Ncco.call_whisper_agent(root_url)
     when 'Joe'
       client.set("whisper_conversation_id", params[:conversation_uuid]) if client.get("whisper_conversation_id").blank?
       client.set("whisper_supervisor_leg_id", params[:uuid])
-      ncco = Ncco.call_whisper_supervisor
+      ncco = Ncco.call_whisper_supervisor(root_url)
     else
       client.set("whisper_conversation_id", params[:conversation_uuid]) if client.get("whisper_conversation_id").blank?
       client.set("whisper_customer_leg_id", params[:uuid])
-      ncco = Ncco.call_whisper_customer
+      ncco = Ncco.call_whisper_customer(root_url)
     end 
 
     if client.get("whisper_conversation_id").blank?
@@ -53,14 +53,11 @@ class WebhooksController < ApplicationController
     if !params[:from_user].blank?
       ncco = Ncco.call_queue_agent
       conv_name = "AGENT-#{params[:from_user]}"
-      puts "CONVERSATION_NAME: #{conv_name}"
       ncco.gsub!("CONVERSATION_NAME", conv_name)
     else
-      ncco = Ncco.call_queue_customer
+      ncco = Ncco.call_queue_customer(root_url)
       conversations = (client.get("queue_conversations") ||  "").split(" || ")
       new_conversation = "#{params[:from]},#{params[:conversation_uuid]},#{params[:uuid]},#{Time.now.getutc.to_i}"
-      puts conversations.inspect
-      puts new_conversation
       conversations << new_conversation
       client.set("queue_conversations", conversations.join(" || "))
     end
