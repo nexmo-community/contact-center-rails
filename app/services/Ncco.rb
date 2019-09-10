@@ -29,21 +29,25 @@ class Ncco
     return ncco
   end
 
-  def self.call_whisper_customer
+  def self.call_whisper_customer(server_url)
     ncco = File.read(Rails.root.join('app', 'services', 'ncco_call_whisper_customer.json'))
+    ncco.sub! 'SERVER_URL', server_url
     return ncco
   end
-  def self.call_whisper_agent
+  def self.call_whisper_agent(server_url)
     ncco = File.read(Rails.root.join('app', 'services', 'ncco_call_whisper_agent.json'))
+    ncco.sub! 'SERVER_URL', server_url
     return ncco
   end
-  def self.call_whisper_supervisor
+  def self.call_whisper_supervisor(server_url)
     ncco = File.read(Rails.root.join('app', 'services', 'ncco_call_whisper_supervisor.json'))
+    ncco.sub! 'SERVER_URL', server_url
     return ncco
   end
 
-  def self.call_queue_customer
+  def self.call_queue_customer(server_url)
     ncco = File.read(Rails.root.join('app', 'services', 'ncco_call_queue_customer.json'))
+    ncco.sub! 'SERVER_URL', server_url
     return ncco
   end
   def self.call_queue_customer_connect

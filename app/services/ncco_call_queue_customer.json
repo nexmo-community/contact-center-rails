@@ -6,6 +6,6 @@
     {
         "action": "stream",
         "loop": 0,
-        "streamUrl": ["https://pardel.ngrok.io/pno-cs.mp3"]
+        "streamUrl": ["SERVER_URLpno-cs.mp3"]
     }
 ]

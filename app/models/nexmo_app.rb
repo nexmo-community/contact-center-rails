@@ -28,14 +28,14 @@ class NexmoApp < ApplicationRecord
       "\nSUPERVISOR_LEG_ID: " + (client.get("whisper_supervisor_leg_id") || "-") +
       "\nCUSTOMER_LEG_ID: " + (client.get("whisper_customer_leg_id") || "-") +
       "</pre>"+
-      "<h6>Customer</h6><pre>" + Ncco.call_whisper_customer + "</pre>" +
-      "<h6>Agent</h6><pre>" + Ncco.call_whisper_agent + "</pre>" +
-      "<h6>Supervisor</h6><pre>" + Ncco.call_whisper_supervisor + "</pre>"
+      "<h6>Customer</h6><pre>" + Ncco.call_whisper_customer(params[:server_url]) + "</pre>" +
+      "<h6>Agent</h6><pre>" + Ncco.call_whisper_agent(params[:server_url]) + "</pre>" +
+      "<h6>Supervisor</h6><pre>" + Ncco.call_whisper_supervisor(params[:server_url]) + "</pre>"
     when "call_queue"
       "<h5>Call Queueing</h5>" +
       "<h6>Queued Calls: </h6><pre>" + (client.get("queue_conversations") || "").split(" || ").join("\n") +
       "</pre>"+
-      "<h6>Customer NCCO</h6><pre>" + Ncco.call_queue_customer + "</pre>" +
+      "<h6>Customer NCCO</h6><pre>" + Ncco.call_queue_customer(params[:server_url]) + "</pre>" +
       "<h6>Customer connect NCCO</h6><pre>" + Ncco.call_queue_customer_connect + "</pre>" +
       "<h6>Agent NCCO</h6><pre>" + Ncco.call_queue_agent + "</pre>"
     else 

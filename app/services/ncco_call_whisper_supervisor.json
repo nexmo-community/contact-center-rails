@@ -7,7 +7,7 @@
         "action": "conversation",
         "name": "CONVERSATION_ID",
         "startOnEnter": false,
-        "musicOnHoldUrl": ["https://pardel.ngrok.io/pno-cs.mp3"],
+        "musicOnHoldUrl": ["SERVER_URLpno-cs.mp3"],
         "canSpeak": [
             "AGENT_LEG_ID"
         ],

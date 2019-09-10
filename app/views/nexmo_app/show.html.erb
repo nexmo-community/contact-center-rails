@@ -59,7 +59,7 @@
       -->
       <%= link_to "Call Queueing", app_ncco_queue_path, method: :post, class: 'btn btn' + ( @nexmo_app.call_queue? ? '' : '-outline') + '-primary btn-sm' %>
     </p>
-    <%= raw @nexmo_app.voice_answer_ncco_descriptive({webhooks_dtmf_url: webhooks_dtmf_url}) %>
+    <%= raw @nexmo_app.voice_answer_ncco_descriptive({webhooks_dtmf_url: webhooks_dtmf_url, server_url: root_url}) %>
   </td>
 </tr>
 </table>
